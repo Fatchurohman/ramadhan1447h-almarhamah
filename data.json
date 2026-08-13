@@ -1,0 +1,17 @@
+{
+  "last_update": "20 Ramadhan 1447 H - 17:30 WIB",
+  "zis": {
+    "zakat_fitrah_beras_kg": 540,
+    "zakat_fitrah_uang": 3750000,
+    "zakat_maal": 8500000,
+    "fidyah": 1250000,
+    "infak_shodaqoh": 2400000
+  },
+  "infak_harian": [
+    { "hari": "Ramadhan 1", "tanggal": "19 Feb 2026", "tarawih": 1250000, "subuh": 450000 },
+    { "hari": "Ramadhan 2", "tanggal": "20 Feb 2026", "tarawih": 1100000, "subuh": 380000 },
+    { "hari": "Ramadhan 3", "tanggal": "21 Feb 2026", "tarawih": 980000, "subuh": 410000 },
+    { "hari": "Ramadhan 4", "tanggal": "22 Feb 2026", "tarawih": 1350000, "subuh": 520000 },
+    { "hari": "Ramadhan 5", "tanggal": "23 Feb 2026", "tarawih": 1050000, "subuh": 390000 }
+  ]
+}
