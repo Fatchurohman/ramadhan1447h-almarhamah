@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Panitia Ramadhan 1447 H</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: { 900: '#022c22', 950: '#011c16' },
+                        gold: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04' }
+                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen pb-20">
+
+    <!-- HEADER ADMIN -->
+    <header class="bg-emerald-950 border-b border-gold-500/30 py-4 px-6 mb-8 shadow-lg">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gold-500 text-emerald-950 flex items-center justify-center font-bold text-xl">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white leading-tight">Panel Input Data Ramadhan</h1>
+                    <p class="text-xs text-gold-400">Masjid Al-Marhamah 1447 H</p>
+                </div>
+            </div>
+            <a href="index.html" target="_blank" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-2 rounded-lg transition-colors">
+                <i class="fa-solid fa-globe mr-1"></i> Lihat Web Publik
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4">
+        
+        <!-- CARA PAKAI BANTUAN -->
+        <div class="bg-emerald-900/40 border border-gold-500/30 rounded-2xl p-4 mb-6 text-xs text-slate-300">
+            <p class="font-bold text-gold-400 mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Alur Kerja Admin:</p>
+            <ol class="list-decimal list-inside space-y-1 text-slate-300">
+                <li>Pilih Tab Tugas sesuai peran Anda (<strong>Bendahara</strong> atau <strong>Petugas ZIS</strong>).</li>
+                <li>Isi atau update angka perolehan pada formulir.</li>
+                <li>Klik tombol <strong class="text-gold-300">"Generate & Download data.json"</strong> di bagian bawah.</li>
+                <li>Upload/Commit file <code>data.json</code> baru tersebut ke repositori GitHub.</li>
+            </ol>
+        </div>
+
+        <!-- TAB NAVIGATION -->
+        <div class="flex border-b border-slate-800 mb-6 gap-2">
+            <button id="tab-btn-bendahara" onclick="switchTab('bendahara')" class="flex-1 py-3 text-sm font-bold rounded-t-xl bg-gold-500 text-emerald-950 border-b-2 border-gold-400 transition-all">
+                <i class="fa-solid fa-wallet mr-2"></i> 1. Admin Bendahara (Infak Harian)
+            </button>
+            <button id="tab-btn-zis" onclick="switchTab('zis')" class="flex-1 py-3 text-sm font-bold rounded-t-xl bg-slate-900 text-slate-400 hover:text-slate-200 transition-all">
+                <i class="fa-solid fa-hand-holding-dollar mr-2"></i> 2. Admin ZIS & Fidyah
+            </button>
+        </div>
+
+        <!-- FORM CONTAINER -->
+        <form id="admin-form" onsubmit="event.preventDefault(); generateJSON();" class="space-y-6">
+            
+            <!-- LAST UPDATE TIME -->
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl">
+                <label class="block text-xs font-bold text-gold-400 uppercase tracking-wider mb-2">Label Waktu Terakhir Update</label>
+                <input type="text" id="last_update" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-gold-500 outline-none" placeholder="Contoh: 20 Ramadhan 1447 H - 17:30 WIB" required>
+            </div>
+
+            <!-- TAB 1: CONTENT BENDAHARA (INFAK HARIAN) -->
+            <div id="tab-bendahara" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-gold-400 uppercase tracking-wider"><i class="fa-solid fa-list-check mr-1"></i> Data Infak Harian Tarawih & Subuh</h3>
+                    <button type="button" onclick="addInfakRow()" class="text-xs bg-emerald-800 hover:bg-emerald-700 text-gold-300 font-bold px-3 py-1.5 rounded-lg border border-gold-500/30">
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Hari/Malam
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto bg-slate-900/60 border border-slate-800 rounded-xl p-3">
+                    <table class="w-full text-left text-xs">
+                        <thead class="text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="p-2">Hari Ke-</th>
+                                <th class="p-2">Tanggal</th>
+                                <th class="p-2">Infak Tarawih (Rp)</th>
+                                <th class="p-2">Infak Subuh (Rp)</th>
+                                <th class="p-2 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="infak-inputs-container">
+                            <!-- Rows generated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 2: CONTENT ZIS (HIDDEN BY DEFAULT) -->
+            <div id="tab-zis" class="hidden space-y-4">
+                <h3 class="text-sm font-bold text-gold-400 uppercase tracking-wider"><i class="fa-solid fa-coins mr-1"></i> Data Perolehan ZIS & Fidyah</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Zakat Fitrah - Beras (Kg)</label>
+                        <input type="number" id="zis_fitrah_beras" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-gold-500 outline-none" value="0">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Zakat Fitrah - Uang (Rp)</label>
+                        <input type="number" id="zis_fitrah_uang" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-gold-500 outline-none" value="0">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Zakat Maal (Rp)</label>
+                        <input type="number" id="zis_maal" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-gold-500 outline-none" value="0">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Fidyah (Rp)</label>
+                        <input type="number" id="zis_fidyah" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-gold-500 outline-none" value="0">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-slate-400 mb-1">Infak / Shodaqoh Umum ZIS (Rp)</label>
+                        <input type="number" id="zis_infak_umum" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-gold-500 outline-none" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row gap-3">
+                <button type="submit" class="flex-1 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-lg transition-all text-sm">
+                    <i class="fa-solid fa-download mr-1"></i> Generate & Download data.json
+                </button>
+                <button type="button" onclick="copyJSONToClipboard()" class="py-3.5 px-6 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl border border-slate-700 transition-all text-sm">
+                    <i class="fa-solid fa-copy mr-1"></i> Salin Teks JSON
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let infakDataList = [
+            { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: 1250000, subuh: 450000 },
+            { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: 1100000, subuh: 380000 }
+        ];
+
+        function switchTab(tab) {
+            const btnBendahara = document.getElementById('tab-btn-bendahara');
+            const btnZis = document.getElementById('tab-btn-zis');
+            const tabBendahara = document.getElementById('tab-bendahara');
+            const tabZis = document.getElementById('tab-zis');
+
+            if (tab === 'bendahara') {
+                btnBendahara.className = "flex-1 py-3 text-sm font-bold rounded-t-xl bg-gold-500 text-emerald-950 border-b-2 border-gold-400 transition-all";
+                btnZis.className = "flex-1 py-3 text-sm font-bold rounded-t-xl bg-slate-900 text-slate-400 hover:text-slate-200 transition-all";
+                tabBendahara.classList.remove('hidden');
+                tabZis.classList.add('hidden');
+            } else {
+                btnZis.className = "flex-1 py-3 text-sm font-bold rounded-t-xl bg-gold-500 text-emerald-950 border-b-2 border-gold-400 transition-all";
+                btnBendahara.className = "flex-1 py-3 text-sm font-bold rounded-t-xl bg-slate-900 text-slate-400 hover:text-slate-200 transition-all";
+                tabZis.classList.remove('hidden');
+                tabBendahara.classList.add('hidden');
+            }
+        }
+
+        function renderInfakRows() {
+            const container = document.getElementById('infak-inputs-container');
+            container.innerHTML = '';
+            infakDataList.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800/50";
+                tr.innerHTML = `
+                    <td class="p-1.5"><input type="text" value="${item.hari}" onchange="updateInfakItem(${index}, 'hari', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white"></td>
+                    <td class="p-1.5"><input type="text" value="${item.tanggal}" onchange="updateInfakItem(${index}, 'tanggal', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white"></td>
+                    <td class="p-1.5"><input type="number" value="${item.tarawih}" onchange="updateInfakItem(${index}, 'tarawih', Number(this.value))" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white text-right"></td>
+                    <td class="p-1.5"><input type="number" value="${item.subuh}" onchange="updateInfakItem(${index}, 'subuh', Number(this.value))" class="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-white text-right"></td>
+                    <td class="p-1.5 text-center"><button type="button" onclick="removeInfakRow(${index})" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button></td>
+                `;
+                container.appendChild(tr);
+            });
+        }
+
+        function addInfakRow() {
+            const nextDay = infakDataList.length + 1;
+            infakDataList.push({ hari: `Ramadhan ${nextDay}`, tanggal: "", tarawih: 0, subuh: 0 });
+            renderInfakRows();
+        }
+
+        function removeInfakRow(index) {
+            infakDataList.splice(index, 1);
+            renderInfakRows();
+        }
+
+        function updateInfakItem(index, field, value) {
+            infakDataList[index][field] = value;
+        }
+
+        function buildJSONObject() {
+            return {
+                last_update: document.getElementById('last_update').value,
+                zis: {
+                    zakat_fitrah_beras_kg: Number(document.getElementById('zis_fitrah_beras').value),
+                    zakat_fitrah_uang: Number(document.getElementById('zis_fitrah_uang').value),
+                    zakat_maal: Number(document.getElementById('zis_maal').value),
+                    fidyah: Number(document.getElementById('zis_fidyah').value),
+                    infak_shodaqoh: Number(document.getElementById('zis_infak_umum').value)
+                },
+                infak_harian: infakDataList
+            };
+        }
+
+        function generateJSON() {
+            const jsonObject = buildJSONObject();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonObject, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "data.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function copyJSONToClipboard() {
+            const jsonObject = buildJSONObject();
+            navigator.clipboard.writeText(JSON.stringify(jsonObject, null, 2));
+            alert("Teks JSON berhasil disalin ke Clipboard! Tinggal paste di file data.json GitHub.");
+        }
+
+        // Set default last update time
+        document.getElementById('last_update').value = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) + " WIB";
+        renderInfakRows();
+    </script>
+</body>
+</html>
