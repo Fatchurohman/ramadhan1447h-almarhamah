@@ -325,7 +325,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
                 <p class="font-semibold text-slate-300">© 1447 H / 2026 M Panitia Ramadhan Masjid Al-Marhamah.</p>
-                <p class="text-slate-500 mt-0.5">Perum Candi Gebang Permai, Ngemplak, Sleman, DI Yogyakarta.</p>
+                <p class="text-slate-500 mt-0.5">Perum Candi Gebang Permai, Depok, Sleman, DI Yogyakarta.</p>
             </div>
             <a href="https://github.com/fatchurohman/ramadhan1447h-almarhamah" target="_blank" class="hover:text-gold-400 transition-colors flex items-center space-x-1">
                 <i class="fa-brands fa-github text-base"></i>
@@ -334,20 +334,13 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC DENGAN GOOGLE SHEETS LIVE INTEGRATION -->
     <script>
+        const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
 
-        // DEFAULT DATA DEMO
-        const defaultData = {
-            last_update: "20 Ramadhan 1447 H - 17:30 WIB",
-            zis: {
-                zakat_fitrah_beras_kg: 540,
-                zakat_fitrah_uang: 3750000,
-                zakat_maal: 8500000,
-                fidyah: 1250000,
-                infak_shodaqoh: 2400000
-            },
+        // DATA STATIS UNTUK KULTUM, AGENDA & GALERI (BISA DITAMBAHKAN SESUAI KEBUTUHAN)
+        const staticData = {
             kultum: [
                 { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
                 { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: "Ust. Dr. H. Abdul Ghofur", subuh: "Ust. Ahmad Hidayat, S.Ag" },
@@ -358,11 +351,6 @@
                 { tanggal_badge: "Setiap Hari", waktu: "17.30 WIB", judul: "Buka Puasa Bersama (Takjil)", deskripsi: "Penyediaan santapan berbuka puasa gratis untuk jamaah & musafir.", lokasi: "Serambi Masjid Al-Marhamah" },
                 { tanggal_badge: "10 Malam Terakhir", waktu: "01.00 WIB", judul: "I'tikaf & Qiyamul Lail", deskripsi: "Penyelenggaraan sholat malam berjamaah & sahur bersama pemburu Lailatul Qadar.", lokasi: "Ruang Utama Masjid" }
             ],
-            infak_harian: [
-                { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: 1250000, subuh: 450000 },
-                { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: 1100000, subuh: 380000 },
-                { hari: "Ramadhan 3", tanggal: "21 Feb 2026", tarawih: 980000, subuh: 410000 }
-            ],
             galeri: [
                 { judul: "Sholat Tarawih Berjamaah", ket: "Malam 1 Ramadhan", url: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=600&auto=format&fit=crop" },
                 { judul: "Pembagian Takjil", ket: "Serambi Masjid", url: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=600&auto=format&fit=crop" },
@@ -371,24 +359,113 @@
             ]
         };
 
+        // HELPER UNTUK MENGAMBIL VALUE APAPUN NAMA HEADER DARI GOOGLE FORM
+        function getValueByKeyword(row, keywords) {
+            for (let key in row) {
+                const lowerKey = key.toLowerCase();
+                if (keywords.some(k => lowerKey.includes(k))) {
+                    const cleaned = String(row[key]).replace(/[^0-9.-]+/g, "");
+                    return Number(cleaned) || 0;
+                }
+            }
+            return 0;
+        }
+
+        function getTextByKeyword(row, keywords) {
+            for (let key in row) {
+                const lowerKey = key.toLowerCase();
+                if (keywords.some(k => lowerKey.includes(k))) {
+                    return String(row[key]).trim();
+                }
+            }
+            return "-";
+        }
+
         async function renderAllData() {
-            let data = defaultData;
+            // Render Kultum, Agenda & Galeri
+            renderStaticSections();
+
             try {
-                const response = await fetch('data.json');
-                if (response.ok) {
-                    data = await response.json();
+                // 1. FETCH INFAK HARIAN DARI FORM RESPONSES 1
+                const resInfak = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/Form%20Responses%201`);
+                if (resInfak.ok) {
+                    const dataInfak = await resInfak.json();
+                    if (Array.isArray(dataInfak) && dataInfak.length > 0) {
+                        renderInfakHarian(dataInfak);
+                        const lastRow = dataInfak[dataInfak.length - 1];
+                        const lastTime = getTextByKeyword(lastRow, ['timestamp', 'waktu']);
+                        if (lastTime !== "-") {
+                            document.getElementById('last-update').innerText = lastTime;
+                        }
+                    }
+                }
+
+                // 2. FETCH ZIS DARI FORM RESPONSES 2
+                const resZis = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/Form%20Responses%202`);
+                if (resZis.ok) {
+                    const dataZis = await resZis.json();
+                    if (Array.isArray(dataZis) && dataZis.length > 0) {
+                        // Ambil baris data paling terbaru yang diinput petugas ZIS
+                        const latestZis = dataZis[dataZis.length - 1];
+                        renderZisCards(latestZis);
+                    }
                 }
             } catch (err) {
-                console.log("Menggunakan data default");
+                console.error("Gagal menarik data dari Google Sheets, periksa apakah sheet sudah dipublikasikan ke web:", err);
             }
+        }
 
-            // 1. Last Update
-            document.getElementById('last-update').innerText = data.last_update || '-';
+        function renderInfakHarian(data) {
+            const infakTbody = document.getElementById('infak-harian-tbody');
+            infakTbody.innerHTML = '';
+            let totalTarawih = 0, totalSubuh = 0;
 
-            // 2. Kultum Table
+            data.forEach((item, index) => {
+                const hari = getTextByKeyword(item, ['hari', 'ramadhan']);
+                const tanggal = getTextByKeyword(item, ['tanggal']);
+                const tarawih = getValueByKeyword(item, ['tarawih']);
+                const subuh = getValueByKeyword(item, ['subuh']);
+                const totalHarian = tarawih + subuh;
+
+                totalTarawih += tarawih;
+                totalSubuh += subuh;
+
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                row.innerHTML = `
+                    <td class="py-3.5 px-6 font-semibold text-gold-300">${hari}</td>
+                    <td class="py-3.5 px-6 text-slate-400">${tanggal}</td>
+                    <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(tarawih)}</td>
+                    <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(subuh)}</td>
+                    <td class="py-3.5 px-6 text-right font-mono font-bold text-gold-400">${formatRp(totalHarian)}</td>
+                `;
+                infakTbody.appendChild(row);
+            });
+
+            document.getElementById('total-tarawih').innerText = formatRp(totalTarawih);
+            document.getElementById('total-subuh').innerText = formatRp(totalSubuh);
+            document.getElementById('total-gabungan-harian').innerText = formatRp(totalTarawih + totalSubuh);
+        }
+
+        function renderZisCards(row) {
+            const beras = getValueByKeyword(row, ['beras', 'kg']);
+            const fitrahUang = getValueByKeyword(row, ['uang', 'fitrah']);
+            const maal = getValueByKeyword(row, ['maal']);
+            const fidyah = getValueByKeyword(row, ['fidyah']);
+            const infak = getValueByKeyword(row, ['infak', 'shodaqoh', 'sedekah']);
+
+            document.getElementById('zis-fitrah-beras').innerText = `${beras} Kg`;
+            document.getElementById('zis-fitrah-uang').innerText = formatRp(fitrahUang);
+            document.getElementById('zis-maal').innerText = formatRp(maal);
+            document.getElementById('zis-fidyah').innerText = formatRp(fidyah);
+            document.getElementById('zis-infak-umum').innerText = formatRp(infak);
+        }
+
+        function renderStaticSections() {
+            // Kultum
             const kultumTbody = document.getElementById('kultum-tbody');
             kultumTbody.innerHTML = '';
-            (data.kultum || []).forEach((item, index) => {
+            staticData.kultum.forEach((item, index) => {
                 const row = document.createElement('tr');
                 row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
                 row.innerHTML = `
@@ -400,10 +477,10 @@
                 kultumTbody.appendChild(row);
             });
 
-            // 3. Agenda Cards
+            // Agenda
             const agendaContainer = document.getElementById('agenda-container');
             agendaContainer.innerHTML = '';
-            (data.agenda || []).forEach(item => {
+            staticData.agenda.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl p-6 border border-gold-500/30 hover:border-gold-500/60 transition-all";
                 card.innerHTML = `
@@ -420,43 +497,10 @@
                 agendaContainer.appendChild(card);
             });
 
-            // 4. ZIS Cards
-            document.getElementById('zis-fitrah-beras').innerText = `${data.zis.zakat_fitrah_beras_kg} Kg`;
-            document.getElementById('zis-fitrah-uang').innerText = formatRp(data.zis.zakat_fitrah_uang);
-            document.getElementById('zis-maal').innerText = formatRp(data.zis.zakat_maal);
-            document.getElementById('zis-fidyah').innerText = formatRp(data.zis.fidyah);
-            document.getElementById('zis-infak-umum').innerText = formatRp(data.zis.infak_shodaqoh);
-
-            // 5. Infak Harian Table
-            const infakTbody = document.getElementById('infak-harian-tbody');
-            infakTbody.innerHTML = '';
-            let totalTarawih = 0, totalSubuh = 0;
-
-            (data.infak_harian || []).forEach((item, index) => {
-                const totalHarian = item.tarawih + item.subuh;
-                totalTarawih += item.tarawih;
-                totalSubuh += item.subuh;
-
-                const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
-                row.innerHTML = `
-                    <td class="py-3.5 px-6 font-semibold text-gold-300">${item.hari}</td>
-                    <td class="py-3.5 px-6 text-slate-400">${item.tanggal}</td>
-                    <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(item.tarawih)}</td>
-                    <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(item.subuh)}</td>
-                    <td class="py-3.5 px-6 text-right font-mono font-bold text-gold-400">${formatRp(totalHarian)}</td>
-                `;
-                infakTbody.appendChild(row);
-            });
-
-            document.getElementById('total-tarawih').innerText = formatRp(totalTarawih);
-            document.getElementById('total-subuh').innerText = formatRp(totalSubuh);
-            document.getElementById('total-gabungan-harian').innerText = formatRp(totalTarawih + totalSubuh);
-
-            // 6. Galeri Grid
+            // Galeri
             const galeriContainer = document.getElementById('galeri-container');
             galeriContainer.innerHTML = '';
-            (data.galeri || []).forEach(item => {
+            staticData.galeri.forEach(item => {
                 const imgCard = document.createElement('div');
                 imgCard.className = "group relative overflow-hidden rounded-2xl border border-gold-500/20 aspect-square";
                 imgCard.innerHTML = `
