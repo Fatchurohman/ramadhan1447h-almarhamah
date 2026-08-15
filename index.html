@@ -1,339 +1,8 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panitia Ramadhan 1447 H - Masjid Al-Marhamah</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Amiri & Plus Jakarta Sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+<!-- JAVASCRIPT LOGIC PRESISI SESUAI STRUKTUR TAB & KOLOM SPREADSHEET -->
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        emerald: { 850: '#064e3b', 900: '#022c22', 950: '#011c16' },
-                        gold: { 300: '#fde047', 400: '#facc15', 500: '#eab308', 600: '#ca8a04', 700: '#a16207' }
-                    },
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                        amiri: ['Amiri', 'serif']
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .glass-card {
-            background: rgba(2, 44, 34, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(234, 179, 8, 0.25);
-        }
-        .hero-bg {
-            background: linear-gradient(180deg, rgba(1, 28, 22, 0.65) 0%, rgba(1, 28, 22, 0.95) 100%), 
-                        url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .pattern-bg {
-            background-color: #011c16;
-            background-image: radial-gradient(#ca8a04 0.5px, transparent 0.5px);
-            background-size: 24px 24px;
-        }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-gold-500 selection:text-emerald-950">
-
-    <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 border-b border-gold-500/30 text-gold-300 text-xs sm:text-sm py-2 px-4 text-center font-medium shadow-md">
-        <span class="inline-block animate-pulse mr-2">✨</span> 
-        Marhaban Ya Ramadhan 1447 H — Masjid Al-Marhamah
-        <span class="inline-block animate-pulse ml-2">✨</span>
-    </div>
-
-    <!-- NAVIGATION HEADER -->
-    <header class="sticky top-0 z-50 bg-emerald-950/90 backdrop-blur-md border-b border-gold-500/20 shadow-xl">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center p-0.5 shadow-lg shadow-gold-500/10 shrink-0">
-                    <div class="w-full h-full bg-emerald-950 rounded-full flex items-center justify-center">
-                        <span class="font-amiri text-gold-400 text-2xl">🕌</span>
-                    </div>
-                </div>
-                <div>
-                    <h1 class="text-base sm:text-lg font-bold text-white tracking-wide leading-tight">PANITIA RAMADHAN 1447 H</h1>
-                    <p class="text-xs sm:text-sm font-bold text-gold-400 uppercase tracking-wider">MASJID AL-MARHAMAH</p>
-                    <p class="text-[11px] text-slate-300 font-medium">Perum Candi Gebang Permai</p>
-                </div>
-            </div>
-
-            <!-- MENU LINKS (DESKTOP) -->
-            <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
-                <a href="#beranda" class="text-gold-400 hover:text-gold-300 transition-colors">Beranda</a>
-                <a href="#jadwal-kultum" class="text-slate-300 hover:text-gold-400 transition-colors">Jadwal Kultum</a>
-                <a href="#agenda" class="text-slate-300 hover:text-gold-400 transition-colors">Agenda</a>
-                <a href="#zis" class="text-slate-300 hover:text-gold-400 transition-colors">Laporan ZIS</a>
-                <a href="#infak-harian" class="text-slate-300 hover:text-gold-400 transition-colors">Infak Harian</a>
-                <a href="#galeri" class="text-slate-300 hover:text-gold-400 transition-colors">Galeri</a>
-                <a href="#gabungan" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 px-4 py-2 rounded-full font-bold shadow-md hover:shadow-gold-500/20 transition-all text-xs">
-                    <i class="fa-solid fa-users-rays mr-1.5"></i> Web Gabungan 5 Masjid
-                </a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- HERO SECTION -->
-    <section id="beranda" class="hero-bg relative min-h-[85vh] flex items-center justify-center text-center px-4 py-20">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="inline-flex items-center space-x-2 bg-emerald-900/80 border border-gold-500/40 rounded-full px-4 py-1.5 backdrop-blur-md">
-                <i class="fa-solid fa-moon text-gold-400 text-xs"></i>
-                <span class="text-xs font-semibold text-gold-300 uppercase tracking-widest">Portal Resmi Informasi & Transparansi</span>
-            </div>
-
-            <h2 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight font-amiri tracking-wide">
-                Gema Semarak Ramadhan 1447 H<br/>
-                <span class="gold-gradient-text">Masjid Al-Marhamah</span>
-            </h2>
-
-            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed">
-                Menghadirkan transparansi pengelolaan Zakat, Infaq, Sedekah, dan Fidyah serta wujud akuntabilitas pelayanan ibadah jamaah selama bulan suci Ramadhan 1447 H.
-            </p>
-
-            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#zis" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-lg shadow-gold-500/20 transition-all text-sm">
-                    <i class="fa-solid fa-hand-holding-dollar mr-2"></i> Lihat Perolehan ZIS
-                </a>
-                <a href="#infak-harian" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-900/80 hover:bg-emerald-800 text-gold-300 font-semibold rounded-xl border border-gold-500/30 backdrop-blur-md transition-all text-sm">
-                    <i class="fa-solid fa-calendar-check mr-2"></i> Infak Tarawih & Subuh
-                </a>
-            </div>
-
-            <!-- LAST UPDATE BADGE -->
-            <div class="pt-6 inline-flex items-center text-xs text-slate-400 bg-slate-900/60 px-4 py-1.5 rounded-full border border-slate-800">
-                <i class="fa-solid fa-clock-rotate-left text-gold-400 mr-2"></i> Update Data Terakhir: <span id="last-update" class="text-gold-300 font-semibold ml-1">Memuat data...</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 1: JADWAL KULTUM TARAWIH & SUBUH -->
-    <section id="jadwal-kultum" class="py-20 pattern-bg relative border-t border-gold-500/10">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
-                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Jadwal Penceramah —</span>
-                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Kultum Tarawih & Subuh</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">Jadwal penceramah dan mubaligh Masjid Al-Marhamah</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
-            </div>
-
-            <div class="glass-card rounded-2xl border border-gold-500/30 overflow-hidden shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-300">
-                        <thead class="bg-emerald-950 text-gold-400 text-xs uppercase font-bold tracking-wider border-b border-gold-500/30">
-                            <tr>
-                                <th class="py-4 px-6">Ramadhan Ke-</th>
-                                <th class="py-4 px-6">Tanggal</th>
-                                <th class="py-4 px-6">Penceramah Tarawih</th>
-                                <th class="py-4 px-6">Penceramah Subuh</th>
-                            </tr>
-                        </thead>
-                        <tbody id="kultum-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Render otomatis via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 2: AGENDA KEGIATAN RAMADHAN -->
-    <section id="agenda" class="py-20 bg-slate-900/90 relative border-t border-gold-500/10">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
-                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Program Utama —</span>
-                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Agenda Kegiatan Ramadhan</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">Rangkaian program & kegiatan spesial Jamaah Al-Marhamah</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="agenda-container">
-                <!-- Render otomatis via JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 3: LAPORAN ZIS & FIDYAH -->
-    <section id="zis" class="py-20 pattern-bg relative border-t border-gold-500/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
-                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Pengelolaan Amil Zakat —</span>
-                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Laporan Perolehan ZIS & Fidyah</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">Diperbarui secara berkala oleh Admin Petugas ZIS Masjid Al-Marhamah</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                <!-- FITRAH BERAS -->
-                <div class="glass-card rounded-2xl p-6 text-center hover:border-gold-500/50 transition-all group hover:-translate-y-1 shadow-xl">
-                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
-                        <i class="fa-solid fa-wheat-awn"></i>
-                    </div>
-                    <h4 class="text-xs uppercase font-bold text-slate-400 tracking-wider">Zakat Fitrah (Beras)</h4>
-                    <p id="zis-fitrah-beras" class="text-2xl font-extrabold text-gold-400 my-2">0 Kg</p>
-                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-1 rounded-full inline-block">Beras Jamaah</span>
-                </div>
-
-                <!-- FITRAH UANG -->
-                <div class="glass-card rounded-2xl p-6 text-center hover:border-gold-500/50 transition-all group hover:-translate-y-1 shadow-xl">
-                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                    </div>
-                    <h4 class="text-xs uppercase font-bold text-slate-400 tracking-wider">Zakat Fitrah (Uang)</h4>
-                    <p id="zis-fitrah-uang" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
-                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-1 rounded-full inline-block">Konversi Uang</span>
-                </div>
-
-                <!-- ZAKAT MAAL -->
-                <div class="glass-card rounded-2xl p-6 text-center hover:border-gold-500/50 transition-all group hover:-translate-y-1 shadow-xl">
-                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
-                        <i class="fa-solid fa-vault"></i>
-                    </div>
-                    <h4 class="text-xs uppercase font-bold text-slate-400 tracking-wider">Zakat Maal</h4>
-                    <p id="zis-maal" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
-                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-1 rounded-full inline-block">Harta / Tabungan</span>
-                </div>
-
-                <!-- FIDYAH -->
-                <div class="glass-card rounded-2xl p-6 text-center hover:border-gold-500/50 transition-all group hover:-translate-y-1 shadow-xl">
-                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
-                        <i class="fa-solid fa-hand-holding-heart"></i>
-                    </div>
-                    <h4 class="text-xs uppercase font-bold text-slate-400 tracking-wider">Fidyah</h4>
-                    <p id="zis-fidyah" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
-                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-1 rounded-full inline-block">Penutup Utang Puasa</span>
-                </div>
-
-                <!-- INFAK/SHODAQOH -->
-                <div class="glass-card rounded-2xl p-6 text-center hover:border-gold-500/50 transition-all group hover:-translate-y-1 shadow-xl">
-                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
-                        <i class="fa-solid fa-box-open"></i>
-                    </div>
-                    <h4 class="text-xs uppercase font-bold text-slate-400 tracking-wider">Infak & Shodaqoh</h4>
-                    <p id="zis-infak-umum" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
-                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-1 rounded-full inline-block">Sedekah Umum</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 4: INFAK HARIAN -->
-    <section id="infak-harian" class="py-20 bg-slate-900/90 relative border-t border-gold-500/10">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
-                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Transparansi Kas Ramadhan —</span>
-                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Laporan Perolehan Infak Harian</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">Kotak Amal Sholat Tarawih & Subuh (Diisi oleh Bendahara Masjid)</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
-            </div>
-
-            <div class="glass-card rounded-2xl border border-gold-500/30 overflow-hidden shadow-2xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-300">
-                        <thead class="bg-emerald-950 text-gold-400 text-xs uppercase font-bold tracking-wider border-b border-gold-500/30">
-                            <tr>
-                                <th class="py-4 px-6">Ramadhan Ke-</th>
-                                <th class="py-4 px-6">Tanggal</th>
-                                <th class="py-4 px-6 text-right">Infak Tarawih (Rp)</th>
-                                <th class="py-4 px-6 text-right">Infak Subuh (Rp)</th>
-                                <th class="py-4 px-6 text-right">Total Harian (Rp)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="infak-harian-tbody" class="divide-y divide-slate-800/80">
-                            <tr><td colspan="5" class="py-8 text-center text-slate-500">Memuat data infak harian...</td></tr>
-                        </tbody>
-                        <tfoot class="bg-emerald-950 border-t-2 border-gold-500/40 text-white font-bold">
-                            <tr>
-                                <td colspan="2" class="py-5 px-6 text-gold-400 uppercase tracking-wider text-xs">TOTAL AKUMULASI HARIAN</td>
-                                <td id="total-tarawih" class="py-5 px-6 text-right text-slate-200">Rp 0</td>
-                                <td id="total-subuh" class="py-5 px-6 text-right text-slate-200">Rp 0</td>
-                                <td id="total-gabungan-harian" class="py-5 px-6 text-right text-gold-400 text-lg font-extrabold">Rp 0</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 5: GALERI FOTO KEGIATAN -->
-    <section id="galeri" class="py-20 pattern-bg relative border-t border-gold-500/10">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
-                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Dokumentasi —</span>
-                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Galeri Kegiatan Ramadhan</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">Dokumentasi momen kebersamaan ibadah jamaah Masjid Al-Marhamah</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="galeri-container">
-                <!-- Render otomatis via JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 6: BANNER WEB GABUNGAN 5 MASJID -->
-    <section id="gabungan" class="py-16 bg-gradient-to-b from-emerald-950 to-slate-950 relative border-t border-gold-500/20">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-card rounded-3xl p-8 sm:p-12 border-2 border-gold-500/40 text-center relative overflow-hidden shadow-2xl">
-                <div class="relative z-10 space-y-6">
-                    <div class="w-16 h-16 bg-gradient-to-tr from-gold-600 to-gold-400 rounded-2xl flex items-center justify-center mx-auto text-emerald-950 text-3xl shadow-lg">
-                        <i class="fa-solid fa-mosque"></i>
-                    </div>
-                    <h3 class="text-2xl sm:text-3xl font-extrabold text-white font-amiri">
-                        Panitia Gabungan 5 Masjid<br/>
-                        <span class="gold-gradient-text">Penyelenggaraan Sholat Idul Fitri 1447 H</span>
-                    </h3>
-                    <p class="text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
-                        Untuk melihat rekapitulasi perolehan ZIS tingkat wilayah serta laporan Infak Pelaksanaan Sholat Idul Fitri Gabungan 5 Masjid, silakan kunjungi website resmi panitia gabungan.
-                    </p>
-                    <a href="#" target="_blank" class="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-xl transition-all text-sm">
-                        <span>🕌 Buka Website Panitia Gabungan 5 Masjid</span>
-                        <i class="fa-solid fa-arrow-right-long"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-                <p class="font-semibold text-slate-300">© 1447 H / 2026 M Panitia Ramadhan Masjid Al-Marhamah.</p>
-                <p class="text-slate-500 mt-0.5">Perum Candi Gebang Permai, Depok, Sleman, DI Yogyakarta.</p>
-            </div>
-            <a href="https://github.com/fatchurohman/ramadhan1447h-almarhamah" target="_blank" class="hover:text-gold-400 transition-colors flex items-center space-x-1">
-                <i class="fa-brands fa-github text-base"></i>
-                <span>Repository GitHub</span>
-            </a>
-        </div>
-    </footer>
-
-    <!-- JAVASCRIPT RESMI (DIBUNGKUS SCRIPT DENGAN BENAR) -->
-    <script>
+        // Masukkan ID Spreadsheet baru di sini (jika membuat file sheet baru, ganti ID-nya di bawah ini)
         const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
+        
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
 
         const staticData = {
@@ -355,183 +24,40 @@
             ]
         };
 
-        async function fetchGoogleSheetRows(sheetName) {
-            try {
-                const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
-                const res = await fetch(url);
-                const text = await res.text();
-                const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-                const rawData = JSON.parse(jsonString);
-                
-                if (!rawData.table || !rawData.table.rows) return [];
+        function parseCSVLine(text) {
+            const result = [];
+            let cur = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+                if (c === '"') {
+                    inQuotes = !inQuotes;
+                } else if (c === ',' && !inQuotes) {
+                    result.push(cur.trim().replace(/^"|"$/g, ''));
+                    cur = '';
+                } else {
+                    cur += c;
+                }
+            }
+            result.push(cur.trim().replace(/^"|"$/g, ''));
+            return result;
+        }
 
-                const cols = rawData.table.cols.map(c => (c && c.label ? c.label.toLowerCase().trim() : ''));
-                return rawData.table.rows.map(r => {
-                    const rowObj = {};
-                    if (r && r.c) {
-                        r.c.forEach((cell, idx) => {
-                            const colName = cols[idx] || `col_${idx}`;
-                            let val = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : '') : '';
-                            rowObj[colName] = val;
-                        });
+        async function fetchCSVRows(tabNames) {
+            for (const sheetName of tabNames) {
+                try {
+                    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
+                    const res = await fetch(url);
+                    if (!res.ok) continue;
+                    const csvText = await res.text();
+                    const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+                    if (lines.length > 1) {
+                        return lines.slice(1).map(line => parseCSVLine(line));
                     }
-                    return rowObj;
-                });
-            } catch (e) {
-                console.error("Gagal membaca sheet:", sheetName, e);
-                return [];
-            }
-        }
-
-        function parseNumber(val) {
-            if (val === null || val === undefined) return 0;
-            const cleaned = String(val).replace(/[^0-9.-]+/g, "");
-            const num = parseFloat(cleaned);
-            return isNaN(num) ? 0 : num;
-        }
-
-        function getRowValue(row, keywords) {
-            if (!row || typeof row !== 'object') return 0;
-            for (const key of Object.keys(row)) {
-                if (keywords.some(k => key.includes(k.toLowerCase()))) {
-                    const num = parseNumber(row[key]);
-                    if (num !== 0) return num;
+                } catch (err) {
+                    console.warn(`Mencoba tab berikutnya setelah gagal pada: ${sheetName}`, err);
                 }
             }
-            return 0;
-        }
-
-        function getRowText(row, keywords) {
-            if (!row || typeof row !== 'object') return "-";
-            for (const key of Object.keys(row)) {
-                if (keywords.some(k => key.includes(k.toLowerCase()))) {
-                    const text = String(row[key]).trim();
-                    if (text !== "" && text !== "null") return text;
-                }
-            }
-            return "-";
-        }
-
-        async function renderAllData() {
-            renderStaticSections();
-
-            // 1. Tab Form Responses 1 (Infak Harian)
-            try {
-                const dataInfak = await fetchGoogleSheetRows("Form Responses 1");
-                if (dataInfak.length > 0) {
-                    renderInfakHarian(dataInfak);
-                    const lastRow = dataInfak[dataInfak.length - 1];
-                    const lastTime = getRowText(lastRow, ['timestamp', 'waktu', 'tanggal']);
-                    if (lastTime !== "-") {
-                        const badge = document.getElementById('last-update');
-                        if (badge) badge.innerText = lastTime;
-                    }
-                }
-            } catch (err) {
-                console.error("Gagal Infak:", err);
-            }
-
-            // 2. Tab Form Responses 2 (Laporan ZIS)
-            try {
-                const dataZis = await fetchGoogleSheetRows("Form Responses 2");
-                if (dataZis.length > 0) {
-                    const latestZis = dataZis[dataZis.length - 1];
-                    renderZisCards(latestZis);
-                }
-            } catch (err) {
-                console.error("Gagal ZIS:", err);
-            }
-        }
-
-        function renderInfakHarian(data) {
-            const infakTbody = document.getElementById('infak-harian-tbody');
-            if (!infakTbody) return;
-            
-            infakTbody.innerHTML = '';
-            let totalTarawih = 0;
-            let totalSubuh = 0;
-
-            data.forEach((item, index) => {
-                const hari = getRowText(item, ['hari', 'ramadhan']);
-                const tanggal = getRowText(item, ['tanggal', 'tgl']);
-                const tarawih = getRowValue(item, ['tarawih']);
-                const subuh = getRowValue(item, ['subuh']);
-                const totalHarian = tarawih + subuh;
-
-                totalTarawih += tarawih;
-                totalSubuh += subuh;
-
-    <!-- JAVASCRIPT LOGIC DIRECT MULTI-SHEET PARSER -->
-    <script>
-        const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
-        const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
-
-        const staticData = {
-            kultum: [
-                { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
-                { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: "Ust. Dr. H. Abdul Ghofur", subuh: "Ust. Ahmad Hidayat, S.Ag" },
-                { hari: "Ramadhan 3", tanggal: "21 Feb 2026", tarawih: "Ust. Farhan Basalamah, Lc", subuh: "Ust. Nuruddin, M.Pd" }
-            ],
-            agenda: [
-                { tanggal_badge: "17 Ramadhan", waktu: "19.30 WIB", judul: "Peringatan Nuzulul Qur'an", deskripsi: "Pengajian umum & tasyakuran memperingati Nuzulul Qur'an bersama jamaah.", lokasi: "Ruang Utama Masjid Al-Marhamah" },
-                { tanggal_badge: "Setiap Hari", waktu: "17.30 WIB", judul: "Buka Puasa Bersama (Takjil)", deskripsi: "Penyediaan santapan berbuka puasa gratis untuk jamaah & musafir.", lokasi: "Serambi Masjid Al-Marhamah" },
-                { tanggal_badge: "10 Malam Terakhir", waktu: "01.00 WIB", judul: "I'tikaf & Qiyamul Lail", deskripsi: "Penyelenggaraan sholat malam berjamaah & sahur bersama pemburu Lailatul Qadar.", lokasi: "Ruang Utama Masjid" }
-            ],
-            galeri: [
-                { judul: "Sholat Tarawih Berjamaah", ket: "Malam 1 Ramadhan", url: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Pembagian Takjil", ket: "Serambi Masjid", url: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Tadarus Al-Qur'an", ket: "Ba'da Tarawih", url: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Posko Amil Zakat", ket: "Pelayanan ZIS", url: "https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=600&auto=format&fit=crop" }
-            ]
-        };
-
-        // Mengambil baris data dari Google Sheet secara universal
-        async function fetchSheetRows(sheetParam) {
-            const urls = [
-                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetParam)}`,
-                `https://opensheet.elk.sh/${SPREADSHEET_ID}/${encodeURIComponent(sheetParam)}`
-            ];
-
-            // Coba GViz terlebih dahulu
-            try {
-                const res = await fetch(urls[0]);
-                if (res.ok) {
-                    const text = await res.text();
-                    const jsonStart = text.indexOf('{');
-                    const jsonEnd = text.lastIndexOf('}');
-                    if (jsonStart !== -1 && jsonEnd !== -1) {
-                        const raw = JSON.parse(text.substring(jsonStart, jsonEnd + 1));
-                        if (raw.table && raw.table.rows && raw.table.rows.length > 0) {
-                            return raw.table.rows.map(r => {
-                                const rowArr = [];
-                                if (r && r.c) {
-                                    r.c.forEach(cell => {
-                                        let val = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : (cell.f || '')) : '';
-                                        rowArr.push(val);
-                                    });
-                                }
-                                return rowArr;
-                            });
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn("GViz fetch failed for", sheetParam, e);
-            }
-
-            // Fallback OpenSheet
-            try {
-                const resOpen = await fetch(urls[1]);
-                if (resOpen.ok) {
-                    const jsonOpen = await resOpen.json();
-                    if (Array.isArray(jsonOpen) && jsonOpen.length > 0) {
-                        return jsonOpen.map(rowObj => Object.values(rowObj));
-                    }
-                }
-            } catch (e) {
-                console.warn("Opensheet fallback failed for", sheetParam, e);
-            }
-
             return [];
         }
 
@@ -546,29 +72,29 @@
         async function renderAllData() {
             renderStaticSections();
 
-            // 1. Ambil Data Infak Harian (Tab Form Responses 1)
+            // 1. Ambil Tab Infak Harian: "Form_Responses" / "Form Responses 1"
             try {
-                const rowsInfak = await fetchSheetRows("Form Responses 1");
-                if (rowsInfak.length > 0) {
+                const rowsInfak = await fetchCSVRows(["Form_Responses", "Form Responses 1", "Form Responses"]);
+                if (rowsInfak && rowsInfak.length > 0) {
                     renderInfakHarian(rowsInfak);
                     const lastRow = rowsInfak[rowsInfak.length - 1];
-                    if (lastRow[0]) {
+                    if (lastRow && lastRow[0]) {
                         const badge = document.getElementById('last-update');
                         if (badge) badge.innerText = String(lastRow[0]);
                     }
                 }
-            } catch (err) {
-                console.error("Gagal Infak:", err);
+            } catch (e) {
+                console.error("Gagal Render Infak:", e);
             }
 
-            // 2. Ambil Data ZIS (Tab Form Responses 2)
+            // 2. Ambil Tab ZIS: "Form_Responses2" / "Form Responses 2"
             try {
-                const rowsZis = await fetchSheetRows("Form Responses 2");
-                if (rowsZis.length > 0) {
+                const rowsZis = await fetchCSVRows(["Form_Responses2", "Form Responses 2"]);
+                if (rowsZis && rowsZis.length > 0) {
                     renderZisCards(rowsZis);
                 }
-            } catch (err) {
-                console.error("Gagal ZIS:", err);
+            } catch (e) {
+                console.error("Gagal Render ZIS:", e);
             }
         }
 
@@ -581,11 +107,11 @@
             let totalSubuh = 0;
 
             rows.forEach((row, index) => {
-                // Kolom A=0 (Timestamp), B=1 (Hari ke-), C=2 (Tanggal), D=3 (Tarawih), E=4 (Subuh)
-                const hari = row[1] ? String(row[1]) : `Hari ke-${index + 1}`;
-                const tanggal = row[2] ? String(row[2]) : '-';
-                const tarawih = parseNum(row[3]);
-                const subuh = parseNum(row[4]);
+                // Sesuai screenshot: Kolom 0 = Timestamp, Kolom 1 = Tanggal, Kolom 2 = Infaq Tarawih, Kolom 3 = Infaq Subuh
+                const hari = `Ramadhan ${index + 1}`;
+                const tanggal = row[1] ? String(row[1]) : '-';
+                const tarawih = parseNum(row[2]);
+                const subuh = parseNum(row[3]);
                 const total = tarawih + subuh;
 
                 totalTarawih += tarawih;
@@ -614,16 +140,14 @@
 
         function renderZisCards(rows) {
             let totalBeras = 0;
-            let totalFitrahUang = 0;
             let totalMaal = 0;
             let totalFidyah = 0;
             let totalInfak = 0;
 
-            // Setiap baris di Form Responses 2 dijumlahkan:
-            // Kolom 0=Timestamp, 1=Beras, 2=Fitrah Uang, 3=Maal, 4=Fidyah, 5=Infak
+            // Sesuai screenshot Form_Responses2:
+            // Kolom 0 = Timestamp, Kolom 1 = Tanggal, Kolom 2 = Zakat Fitrah(Kg), Kolom 3 = Zakat Mal(Rp), Kolom 4 = Fidyah(Rp), Kolom 5 = Infaq/Shodaqoh(Rp)
             rows.forEach(row => {
-                totalBeras += parseNum(row[1]);
-                totalFitrahUang += parseNum(row[2]);
+                totalBeras += parseNum(row[2]);
                 totalMaal += parseNum(row[3]);
                 totalFidyah += parseNum(row[4]);
                 totalInfak += parseNum(row[5]);
@@ -636,7 +160,7 @@
             const elInfak = document.getElementById('zis-infak-umum');
 
             if (elBeras) elBeras.innerText = `${totalBeras.toLocaleString('id-ID')} Kg`;
-            if (elFitrahUang) elFitrahUang.innerText = formatRp(totalFitrahUang);
+            if (elFitrahUang) elFitrahUang.innerText = formatRp(0); // Sesuai form baru yang hanya beras
             if (elMaal) elMaal.innerText = formatRp(totalMaal);
             if (elFidyah) elFidyah.innerText = formatRp(totalFidyah);
             if (elInfak) elInfak.innerText = formatRp(totalInfak);
@@ -700,6 +224,3 @@
 
         window.addEventListener('DOMContentLoaded', renderAllData);
     </script>
-
-</body>
-</html>
