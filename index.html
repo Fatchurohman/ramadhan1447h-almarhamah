@@ -461,16 +461,146 @@
                 totalTarawih += tarawih;
                 totalSubuh += subuh;
 
-                const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
-                row.innerHTML = `
-                    <td class="py-3.5 px-6 font-semibold text-gold-300">${hari !== '-' ? hari : `Hari ke-${index + 1}`}</td>
+    <!-- JAVASCRIPT LOGIC DIRECT MULTI-SHEET PARSER -->
+    <script>
+        const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
+        const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+
+        const staticData = {
+            kultum: [
+                { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
+                { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: "Ust. Dr. H. Abdul Ghofur", subuh: "Ust. Ahmad Hidayat, S.Ag" },
+                { hari: "Ramadhan 3", tanggal: "21 Feb 2026", tarawih: "Ust. Farhan Basalamah, Lc", subuh: "Ust. Nuruddin, M.Pd" }
+            ],
+            agenda: [
+                { tanggal_badge: "17 Ramadhan", waktu: "19.30 WIB", judul: "Peringatan Nuzulul Qur'an", deskripsi: "Pengajian umum & tasyakuran memperingati Nuzulul Qur'an bersama jamaah.", lokasi: "Ruang Utama Masjid Al-Marhamah" },
+                { tanggal_badge: "Setiap Hari", waktu: "17.30 WIB", judul: "Buka Puasa Bersama (Takjil)", deskripsi: "Penyediaan santapan berbuka puasa gratis untuk jamaah & musafir.", lokasi: "Serambi Masjid Al-Marhamah" },
+                { tanggal_badge: "10 Malam Terakhir", waktu: "01.00 WIB", judul: "I'tikaf & Qiyamul Lail", deskripsi: "Penyelenggaraan sholat malam berjamaah & sahur bersama pemburu Lailatul Qadar.", lokasi: "Ruang Utama Masjid" }
+            ],
+            galeri: [
+                { judul: "Sholat Tarawih Berjamaah", ket: "Malam 1 Ramadhan", url: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=600&auto=format&fit=crop" },
+                { judul: "Pembagian Takjil", ket: "Serambi Masjid", url: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=600&auto=format&fit=crop" },
+                { judul: "Tadarus Al-Qur'an", ket: "Ba'da Tarawih", url: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=600&auto=format&fit=crop" },
+                { judul: "Posko Amil Zakat", ket: "Pelayanan ZIS", url: "https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=600&auto=format&fit=crop" }
+            ]
+        };
+
+        // Mengambil baris data dari Google Sheet secara universal
+        async function fetchSheetRows(sheetParam) {
+            const urls = [
+                `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetParam)}`,
+                `https://opensheet.elk.sh/${SPREADSHEET_ID}/${encodeURIComponent(sheetParam)}`
+            ];
+
+            // Coba GViz terlebih dahulu
+            try {
+                const res = await fetch(urls[0]);
+                if (res.ok) {
+                    const text = await res.text();
+                    const jsonStart = text.indexOf('{');
+                    const jsonEnd = text.lastIndexOf('}');
+                    if (jsonStart !== -1 && jsonEnd !== -1) {
+                        const raw = JSON.parse(text.substring(jsonStart, jsonEnd + 1));
+                        if (raw.table && raw.table.rows && raw.table.rows.length > 0) {
+                            return raw.table.rows.map(r => {
+                                const rowArr = [];
+                                if (r && r.c) {
+                                    r.c.forEach(cell => {
+                                        let val = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : (cell.f || '')) : '';
+                                        rowArr.push(val);
+                                    });
+                                }
+                                return rowArr;
+                            });
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn("GViz fetch failed for", sheetParam, e);
+            }
+
+            // Fallback OpenSheet
+            try {
+                const resOpen = await fetch(urls[1]);
+                if (resOpen.ok) {
+                    const jsonOpen = await resOpen.json();
+                    if (Array.isArray(jsonOpen) && jsonOpen.length > 0) {
+                        return jsonOpen.map(rowObj => Object.values(rowObj));
+                    }
+                }
+            } catch (e) {
+                console.warn("Opensheet fallback failed for", sheetParam, e);
+            }
+
+            return [];
+        }
+
+        function parseNum(val) {
+            if (val === null || val === undefined) return 0;
+            if (typeof val === 'number') return val;
+            const clean = String(val).replace(/[^0-9.-]+/g, "");
+            const num = parseFloat(clean);
+            return isNaN(num) ? 0 : num;
+        }
+
+        async function renderAllData() {
+            renderStaticSections();
+
+            // 1. Ambil Data Infak Harian (Tab Form Responses 1)
+            try {
+                const rowsInfak = await fetchSheetRows("Form Responses 1");
+                if (rowsInfak.length > 0) {
+                    renderInfakHarian(rowsInfak);
+                    const lastRow = rowsInfak[rowsInfak.length - 1];
+                    if (lastRow[0]) {
+                        const badge = document.getElementById('last-update');
+                        if (badge) badge.innerText = String(lastRow[0]);
+                    }
+                }
+            } catch (err) {
+                console.error("Gagal Infak:", err);
+            }
+
+            // 2. Ambil Data ZIS (Tab Form Responses 2)
+            try {
+                const rowsZis = await fetchSheetRows("Form Responses 2");
+                if (rowsZis.length > 0) {
+                    renderZisCards(rowsZis);
+                }
+            } catch (err) {
+                console.error("Gagal ZIS:", err);
+            }
+        }
+
+        function renderInfakHarian(rows) {
+            const tbody = document.getElementById('infak-harian-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let totalTarawih = 0;
+            let totalSubuh = 0;
+
+            rows.forEach((row, index) => {
+                // Kolom A=0 (Timestamp), B=1 (Hari ke-), C=2 (Tanggal), D=3 (Tarawih), E=4 (Subuh)
+                const hari = row[1] ? String(row[1]) : `Hari ke-${index + 1}`;
+                const tanggal = row[2] ? String(row[2]) : '-';
+                const tarawih = parseNum(row[3]);
+                const subuh = parseNum(row[4]);
+                const total = tarawih + subuh;
+
+                totalTarawih += tarawih;
+                totalSubuh += subuh;
+
+                const tr = document.createElement('tr');
+                tr.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-6 font-semibold text-gold-300">${hari}</td>
                     <td class="py-3.5 px-6 text-slate-400">${tanggal}</td>
                     <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(tarawih)}</td>
                     <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(subuh)}</td>
-                    <td class="py-3.5 px-6 text-right font-mono font-bold text-gold-400">${formatRp(totalHarian)}</td>
+                    <td class="py-3.5 px-6 text-right font-mono font-bold text-gold-400">${formatRp(total)}</td>
                 `;
-                infakTbody.appendChild(row);
+                tbody.appendChild(tr);
             });
 
             const elTotalTarawih = document.getElementById('total-tarawih');
@@ -482,12 +612,22 @@
             if (elTotalGabungan) elTotalGabungan.innerText = formatRp(totalTarawih + totalSubuh);
         }
 
-        function renderZisCards(row) {
-            const beras = getRowValue(row, ['beras', 'kg']);
-            const fitrahUang = getRowValue(row, ['fitrah uang', 'uang', 'fitrah']);
-            const maal = getRowValue(row, ['maal', 'mal']);
-            const fidyah = getRowValue(row, ['fidyah']);
-            const infak = getRowValue(row, ['infak', 'shodaqoh', 'sedekah', 'umum']);
+        function renderZisCards(rows) {
+            let totalBeras = 0;
+            let totalFitrahUang = 0;
+            let totalMaal = 0;
+            let totalFidyah = 0;
+            let totalInfak = 0;
+
+            // Setiap baris di Form Responses 2 dijumlahkan:
+            // Kolom 0=Timestamp, 1=Beras, 2=Fitrah Uang, 3=Maal, 4=Fidyah, 5=Infak
+            rows.forEach(row => {
+                totalBeras += parseNum(row[1]);
+                totalFitrahUang += parseNum(row[2]);
+                totalMaal += parseNum(row[3]);
+                totalFidyah += parseNum(row[4]);
+                totalInfak += parseNum(row[5]);
+            });
 
             const elBeras = document.getElementById('zis-fitrah-beras');
             const elFitrahUang = document.getElementById('zis-fitrah-uang');
@@ -495,11 +635,11 @@
             const elFidyah = document.getElementById('zis-fidyah');
             const elInfak = document.getElementById('zis-infak-umum');
 
-            if (elBeras) elBeras.innerText = `${beras.toLocaleString('id-ID')} Kg`;
-            if (elFitrahUang) elFitrahUang.innerText = formatRp(fitrahUang);
-            if (elMaal) elMaal.innerText = formatRp(maal);
-            if (elFidyah) elFidyah.innerText = formatRp(fidyah);
-            if (elInfak) elInfak.innerText = formatRp(infak);
+            if (elBeras) elBeras.innerText = `${totalBeras.toLocaleString('id-ID')} Kg`;
+            if (elFitrahUang) elFitrahUang.innerText = formatRp(totalFitrahUang);
+            if (elMaal) elMaal.innerText = formatRp(totalMaal);
+            if (elFidyah) elFidyah.innerText = formatRp(totalFidyah);
+            if (elInfak) elInfak.innerText = formatRp(totalInfak);
         }
 
         function renderStaticSections() {
@@ -560,5 +700,6 @@
 
         window.addEventListener('DOMContentLoaded', renderAllData);
     </script>
+
 </body>
 </html>
