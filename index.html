@@ -74,11 +74,8 @@
                     </div>
                 </div>
                 <div>
-                    <!-- Baris 1: Panitia Ramadhan (Besar & Putih) -->
                     <h1 class="text-base sm:text-lg font-bold text-white tracking-wide leading-tight">PANITIA RAMADHAN 1447 H</h1>
-                    <!-- Baris 2: Masjid Al-Marhamah (Warna Emas) -->
                     <p class="text-xs sm:text-sm font-bold text-gold-400 uppercase tracking-wider">MASJID AL-MARHAMAH</p>
-                    <!-- Baris 3: Alamat -->
                     <p class="text-[11px] text-slate-300 font-medium">Perum Candi Gebang Permai</p>
                 </div>
             </div>
@@ -153,7 +150,7 @@
                             </tr>
                         </thead>
                         <tbody id="kultum-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Populated via JavaScript -->
+                            <!-- Render otomatis via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -172,7 +169,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="agenda-container">
-                <!-- Populated via JavaScript -->
+                <!-- Render otomatis via JS -->
             </div>
         </div>
     </section>
@@ -291,7 +288,7 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="galeri-container">
-                <!-- Populated via JavaScript -->
+                <!-- Render otomatis via JS -->
             </div>
         </div>
     </section>
@@ -334,12 +331,11 @@
         </div>
     </footer>
 
-        <!-- JAVASCRIPT LOGIC DENGAN GOOGLE SHEETS OFFICIAL GVIZ API -->
+    <!-- JAVASCRIPT RESMI (DIBUNGKUS SCRIPT DENGAN BENAR) -->
     <script>
         const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
 
-        // DATA STATIS UNTUK KULTUM, AGENDA & GALERI
         const staticData = {
             kultum: [
                 { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
@@ -359,30 +355,32 @@
             ]
         };
 
-        // PARSER GOOGLE SHEETS GVIZ RESMI
         async function fetchGoogleSheetRows(sheetName) {
-            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
-            const res = await fetch(url);
-            const text = await res.text();
-            
-            // Format respon gviz: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
-            const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-            const rawData = JSON.parse(jsonString);
-            
-            if (!rawData.table || !rawData.table.rows) return [];
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+                const res = await fetch(url);
+                const text = await res.text();
+                const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                const rawData = JSON.parse(jsonString);
+                
+                if (!rawData.table || !rawData.table.rows) return [];
 
-            const cols = rawData.table.cols.map(c => (c && c.label ? c.label.toLowerCase().trim() : ''));
-            const rows = rawData.table.rows.map(r => {
-                const rowObj = {};
-                r.c.forEach((cell, idx) => {
-                    const colName = cols[idx] || `col_${idx}`;
-                    let val = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : '') : '';
-                    rowObj[colName] = val;
+                const cols = rawData.table.cols.map(c => (c && c.label ? c.label.toLowerCase().trim() : ''));
+                return rawData.table.rows.map(r => {
+                    const rowObj = {};
+                    if (r && r.c) {
+                        r.c.forEach((cell, idx) => {
+                            const colName = cols[idx] || `col_${idx}`;
+                            let val = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : '') : '';
+                            rowObj[colName] = val;
+                        });
+                    }
+                    return rowObj;
                 });
-                return rowObj;
-            });
-
-            return rows;
+            } catch (e) {
+                console.error("Gagal membaca sheet:", sheetName, e);
+                return [];
+            }
         }
 
         function parseNumber(val) {
@@ -417,7 +415,7 @@
         async function renderAllData() {
             renderStaticSections();
 
-            // 1. BACA TAB 1 (INFAK HARIAN)
+            // 1. Tab Form Responses 1 (Infak Harian)
             try {
                 const dataInfak = await fetchGoogleSheetRows("Form Responses 1");
                 if (dataInfak.length > 0) {
@@ -430,10 +428,10 @@
                     }
                 }
             } catch (err) {
-                console.error("Gagal memuat tab Form Responses 1:", err);
+                console.error("Gagal Infak:", err);
             }
 
-            // 2. BACA TAB 2 (ZIS)
+            // 2. Tab Form Responses 2 (Laporan ZIS)
             try {
                 const dataZis = await fetchGoogleSheetRows("Form Responses 2");
                 if (dataZis.length > 0) {
@@ -441,7 +439,7 @@
                     renderZisCards(latestZis);
                 }
             } catch (err) {
-                console.error("Gagal memuat tab Form Responses 2:", err);
+                console.error("Gagal ZIS:", err);
             }
         }
 
@@ -505,7 +503,6 @@
         }
 
         function renderStaticSections() {
-            // Kultum
             const kultumTbody = document.getElementById('kultum-tbody');
             if (kultumTbody) {
                 kultumTbody.innerHTML = '';
@@ -522,7 +519,6 @@
                 });
             }
 
-            // Agenda
             const agendaContainer = document.getElementById('agenda-container');
             if (agendaContainer) {
                 agendaContainer.innerHTML = '';
@@ -544,7 +540,6 @@
                 });
             }
 
-            // Galeri
             const galeriContainer = document.getElementById('galeri-container');
             if (galeriContainer) {
                 galeriContainer.innerHTML = '';
@@ -565,221 +560,5 @@
 
         window.addEventListener('DOMContentLoaded', renderAllData);
     </script>
-
-        const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
-        const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
-
-        // DATA STATIS UNTUK KULTUM, AGENDA & GALERI
-        const staticData = {
-            kultum: [
-                { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
-                { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: "Ust. Dr. H. Abdul Ghofur", subuh: "Ust. Ahmad Hidayat, S.Ag" },
-                { hari: "Ramadhan 3", tanggal: "21 Feb 2026", tarawih: "Ust. Farhan Basalamah, Lc", subuh: "Ust. Nuruddin, M.Pd" }
-            ],
-            agenda: [
-                { tanggal_badge: "17 Ramadhan", waktu: "19.30 WIB", judul: "Peringatan Nuzulul Qur'an", deskripsi: "Pengajian umum & tasyakuran memperingati Nuzulul Qur'an bersama jamaah.", lokasi: "Ruang Utama Masjid Al-Marhamah" },
-                { tanggal_badge: "Setiap Hari", waktu: "17.30 WIB", judul: "Buka Puasa Bersama (Takjil)", deskripsi: "Penyediaan santapan berbuka puasa gratis untuk jamaah & musafir.", lokasi: "Serambi Masjid Al-Marhamah" },
-                { tanggal_badge: "10 Malam Terakhir", waktu: "01.00 WIB", judul: "I'tikaf & Qiyamul Lail", deskripsi: "Penyelenggaraan sholat malam berjamaah & sahur bersama pemburu Lailatul Qadar.", lokasi: "Ruang Utama Masjid" }
-            ],
-            galeri: [
-                { judul: "Sholat Tarawih Berjamaah", ket: "Malam 1 Ramadhan", url: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Pembagian Takjil", ket: "Serambi Masjid", url: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Tadarus Al-Qur'an", ket: "Ba'da Tarawih", url: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Posko Amil Zakat", ket: "Pelayanan ZIS", url: "https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=600&auto=format&fit=crop" }
-            ]
-        };
-
-        // HELPER PEMBERSIH NILAI ANGKA
-        function parseCleanNumber(val) {
-            if (val === null || val === undefined) return 0;
-            const cleaned = String(val).replace(/[^0-9.-]+/g, "");
-            const num = parseFloat(cleaned);
-            return isNaN(num) ? 0 : num;
-        }
-
-        // MENCARI VALUE BERDASARKAN KATA KUNCI HEADER (FLEKSIBEL TERHADAP SPASI/HURUF BESAR/KECIL)
-        function getValueByKeyword(row, keywords) {
-            if (!row || typeof row !== 'object') return 0;
-            for (const key of Object.keys(row)) {
-                const lowerKey = key.toLowerCase();
-                if (keywords.some(k => lowerKey.includes(k.toLowerCase()))) {
-                    const parsed = parseCleanNumber(row[key]);
-                    if (parsed !== 0) return parsed;
-                }
-            }
-            return 0;
-        }
-
-        function getTextByKeyword(row, keywords) {
-            if (!row || typeof row !== 'object') return "-";
-            for (const key of Object.keys(row)) {
-                const lowerKey = key.toLowerCase();
-                if (keywords.some(k => lowerKey.includes(k.toLowerCase()))) {
-                    const val = String(row[key]).trim();
-                    if (val !== "") return val;
-                }
-            }
-            return "-";
-        }
-
-        async function renderAllData() {
-            renderStaticSections();
-
-            // 1. TARIK DATA INFAK HARIAN (FORM RESPONSES 1)
-            try {
-                const resInfak = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/Form%20Responses%201`);
-                if (resInfak.ok) {
-                    const dataInfak = await resInfak.json();
-                    if (Array.isArray(dataInfak) && dataInfak.length > 0) {
-                        renderInfakHarian(dataInfak);
-                        const lastRow = dataInfak[dataInfak.length - 1];
-                        const lastTime = getTextByKeyword(lastRow, ['timestamp', 'waktu', 'tanggal']);
-                        if (lastTime !== "-") {
-                            const badge = document.getElementById('last-update');
-                            if (badge) badge.innerText = lastTime;
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error("Gagal mengambil data Infak Harian:", err);
-            }
-
-            // 2. TARIK DATA LAPORAN ZIS (FORM RESPONSES 2)
-            try {
-                const resZis = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/Form%20Responses%202`);
-                if (resZis.ok) {
-                    const dataZis = await resZis.json();
-                    if (Array.isArray(dataZis) && dataZis.length > 0) {
-                        const latestZis = dataZis[dataZis.length - 1];
-                        renderZisCards(latestZis);
-                    }
-                }
-            } catch (err) {
-                console.error("Gagal mengambil data ZIS:", err);
-            }
-        }
-
-        function renderInfakHarian(data) {
-            const infakTbody = document.getElementById('infak-harian-tbody');
-            if (!infakTbody) return;
-            
-            infakTbody.innerHTML = '';
-            let totalTarawih = 0;
-            let totalSubuh = 0;
-
-            data.forEach((item, index) => {
-                const hari = getTextByKeyword(item, ['hari', 'ramadhan ke']);
-                const tanggal = getTextByKeyword(item, ['tanggal', 'tgl']);
-                const tarawih = getValueByKeyword(item, ['tarawih']);
-                const subuh = getValueByKeyword(item, ['subuh']);
-                const totalHarian = tarawih + subuh;
-
-                totalTarawih += tarawih;
-                totalSubuh += subuh;
-
-                const row = document.createElement('tr');
-                row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
-                row.innerHTML = `
-                    <td class="py-3.5 px-6 font-semibold text-gold-300">${hari}</td>
-                    <td class="py-3.5 px-6 text-slate-400">${tanggal}</td>
-                    <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(tarawih)}</td>
-                    <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(subuh)}</td>
-                    <td class="py-3.5 px-6 text-right font-mono font-bold text-gold-400">${formatRp(totalHarian)}</td>
-                `;
-                infakTbody.appendChild(row);
-            });
-
-            const elTotalTarawih = document.getElementById('total-tarawih');
-            const elTotalSubuh = document.getElementById('total-subuh');
-            const elTotalGabungan = document.getElementById('total-gabungan-harian');
-
-            if (elTotalTarawih) elTotalTarawih.innerText = formatRp(totalTarawih);
-            if (elTotalSubuh) elTotalSubuh.innerText = formatRp(totalSubuh);
-            if (elTotalGabungan) elTotalGabungan.innerText = formatRp(totalTarawih + totalSubuh);
-        }
-
-        function renderZisCards(row) {
-            // Pencarian toleran terhadap berbagai kemungkinan penulisan label formulir
-            const beras = getValueByKeyword(row, ['beras', 'kg', 'fitrah beras']);
-            const fitrahUang = getValueByKeyword(row, ['fitrah uang', 'uang', 'fitrah']);
-            const maal = getValueByKeyword(row, ['maal', 'mal']);
-            const fidyah = getValueByKeyword(row, ['fidyah']);
-            const infak = getValueByKeyword(row, ['infak', 'shodaqoh', 'sedekah', 'umum']);
-
-            const elBeras = document.getElementById('zis-fitrah-beras');
-            const elFitrahUang = document.getElementById('zis-fitrah-uang');
-            const elMaal = document.getElementById('zis-maal');
-            const elFidyah = document.getElementById('zis-fidyah');
-            const elInfak = document.getElementById('zis-infak-umum');
-
-            if (elBeras) elBeras.innerText = `${beras.toLocaleString('id-ID')} Kg`;
-            if (elFitrahUang) elFitrahUang.innerText = formatRp(fitrahUang);
-            if (elMaal) elMaal.innerText = formatRp(maal);
-            if (elFidyah) elFidyah.innerText = formatRp(fidyah);
-            if (elInfak) elInfak.innerText = formatRp(infak);
-        }
-
-        function renderStaticSections() {
-            // Kultum
-            const kultumTbody = document.getElementById('kultum-tbody');
-            if (kultumTbody) {
-                kultumTbody.innerHTML = '';
-                staticData.kultum.forEach((item, index) => {
-                    const row = document.createElement('tr');
-                    row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
-                    row.innerHTML = `
-                        <td class="py-3.5 px-6 font-semibold text-gold-300">${item.hari}</td>
-                        <td class="py-3.5 px-6 text-slate-400">${item.tanggal}</td>
-                        <td class="py-3.5 px-6 font-medium text-white">${item.tarawih}</td>
-                        <td class="py-3.5 px-6 font-medium text-white">${item.subuh}</td>
-                    `;
-                    kultumTbody.appendChild(row);
-                });
-            }
-
-            // Agenda
-            const agendaContainer = document.getElementById('agenda-container');
-            if (agendaContainer) {
-                agendaContainer.innerHTML = '';
-                staticData.agenda.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = "glass-card rounded-2xl p-6 border border-gold-500/30 hover:border-gold-500/60 transition-all";
-                    card.innerHTML = `
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs bg-gold-500/20 text-gold-300 font-bold px-3 py-1 rounded-full border border-gold-500/30">${item.tanggal_badge}</span>
-                            <span class="text-[11px] text-emerald-400 font-medium">${item.waktu}</span>
-                        </div>
-                        <h4 class="text-lg font-bold text-white mb-2">${item.judul}</h4>
-                        <p class="text-xs text-slate-300 leading-relaxed mb-4">${item.deskripsi}</p>
-                        <div class="text-[11px] text-slate-400 flex items-center">
-                            <i class="fa-solid fa-location-dot text-gold-400 mr-2"></i> ${item.lokasi}
-                        </div>
-                    `;
-                    agendaContainer.appendChild(card);
-                });
-            }
-
-            // Galeri
-            const galeriContainer = document.getElementById('galeri-container');
-            if (galeriContainer) {
-                galeriContainer.innerHTML = '';
-                staticData.galeri.forEach(item => {
-                    const imgCard = document.createElement('div');
-                    imgCard.className = "group relative overflow-hidden rounded-2xl border border-gold-500/20 aspect-square";
-                    imgCard.innerHTML = `
-                        <img src="${item.url}" alt="${item.judul}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
-                            <p class="text-xs font-bold text-gold-300">${item.judul}</p>
-                            <p class="text-[10px] text-slate-300">${item.ket}</p>
-                        </div>
-                    `;
-                    galeriContainer.appendChild(imgCard);
-                });
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', renderAllData);
-    </script>
-
 </body>
 </html>
