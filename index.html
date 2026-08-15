@@ -334,12 +334,12 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC DENGAN GOOGLE SHEETS LIVE INTEGRATION -->
+        <!-- JAVASCRIPT LOGIC DENGAN GOOGLE SHEETS OFFICIAL GVIZ API -->
     <script>
         const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
 
-        // DATA STATIS UNTUK KULTUM, AGENDA & GALERI (BISA DITAMBAHKAN SESUAI KEBUTUHAN)
+        // DATA STATIS UNTUK KULTUM, AGENDA & GALERI
         const staticData = {
             kultum: [
                 { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
@@ -359,72 +359,105 @@
             ]
         };
 
-        // HELPER UNTUK MENGAMBIL VALUE APAPUN NAMA HEADER DARI GOOGLE FORM
-        function getValueByKeyword(row, keywords) {
-            for (let key in row) {
-                const lowerKey = key.toLowerCase();
-                if (keywords.some(k => lowerKey.includes(k))) {
-                    const cleaned = String(row[key]).replace(/[^0-9.-]+/g, "");
-                    return Number(cleaned) || 0;
+        // PARSER GOOGLE SHEETS GVIZ RESMI
+        async function fetchGoogleSheetRows(sheetName) {
+            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+            const res = await fetch(url);
+            const text = await res.text();
+            
+            // Format respon gviz: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+            const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+            const rawData = JSON.parse(jsonString);
+            
+            if (!rawData.table || !rawData.table.rows) return [];
+
+            const cols = rawData.table.cols.map(c => (c && c.label ? c.label.toLowerCase().trim() : ''));
+            const rows = rawData.table.rows.map(r => {
+                const rowObj = {};
+                r.c.forEach((cell, idx) => {
+                    const colName = cols[idx] || `col_${idx}`;
+                    let val = cell ? (cell.v !== null && cell.v !== undefined ? cell.v : '') : '';
+                    rowObj[colName] = val;
+                });
+                return rowObj;
+            });
+
+            return rows;
+        }
+
+        function parseNumber(val) {
+            if (val === null || val === undefined) return 0;
+            const cleaned = String(val).replace(/[^0-9.-]+/g, "");
+            const num = parseFloat(cleaned);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function getRowValue(row, keywords) {
+            if (!row || typeof row !== 'object') return 0;
+            for (const key of Object.keys(row)) {
+                if (keywords.some(k => key.includes(k.toLowerCase()))) {
+                    const num = parseNumber(row[key]);
+                    if (num !== 0) return num;
                 }
             }
             return 0;
         }
 
-        function getTextByKeyword(row, keywords) {
-            for (let key in row) {
-                const lowerKey = key.toLowerCase();
-                if (keywords.some(k => lowerKey.includes(k))) {
-                    return String(row[key]).trim();
+        function getRowText(row, keywords) {
+            if (!row || typeof row !== 'object') return "-";
+            for (const key of Object.keys(row)) {
+                if (keywords.some(k => key.includes(k.toLowerCase()))) {
+                    const text = String(row[key]).trim();
+                    if (text !== "" && text !== "null") return text;
                 }
             }
             return "-";
         }
 
         async function renderAllData() {
-            // Render Kultum, Agenda & Galeri
             renderStaticSections();
 
+            // 1. BACA TAB 1 (INFAK HARIAN)
             try {
-                // 1. FETCH INFAK HARIAN DARI FORM RESPONSES 1
-                const resInfak = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/Form%20Responses%201`);
-                if (resInfak.ok) {
-                    const dataInfak = await resInfak.json();
-                    if (Array.isArray(dataInfak) && dataInfak.length > 0) {
-                        renderInfakHarian(dataInfak);
-                        const lastRow = dataInfak[dataInfak.length - 1];
-                        const lastTime = getTextByKeyword(lastRow, ['timestamp', 'waktu']);
-                        if (lastTime !== "-") {
-                            document.getElementById('last-update').innerText = lastTime;
-                        }
-                    }
-                }
-
-                // 2. FETCH ZIS DARI FORM RESPONSES 2
-                const resZis = await fetch(`https://opensheet.elk.sh/${SPREADSHEET_ID}/Form%20Responses%202`);
-                if (resZis.ok) {
-                    const dataZis = await resZis.json();
-                    if (Array.isArray(dataZis) && dataZis.length > 0) {
-                        // Ambil baris data paling terbaru yang diinput petugas ZIS
-                        const latestZis = dataZis[dataZis.length - 1];
-                        renderZisCards(latestZis);
+                const dataInfak = await fetchGoogleSheetRows("Form Responses 1");
+                if (dataInfak.length > 0) {
+                    renderInfakHarian(dataInfak);
+                    const lastRow = dataInfak[dataInfak.length - 1];
+                    const lastTime = getRowText(lastRow, ['timestamp', 'waktu', 'tanggal']);
+                    if (lastTime !== "-") {
+                        const badge = document.getElementById('last-update');
+                        if (badge) badge.innerText = lastTime;
                     }
                 }
             } catch (err) {
-                console.error("Gagal menarik data dari Google Sheets, periksa apakah sheet sudah dipublikasikan ke web:", err);
+                console.error("Gagal memuat tab Form Responses 1:", err);
+            }
+
+            // 2. BACA TAB 2 (ZIS)
+            try {
+                const dataZis = await fetchGoogleSheetRows("Form Responses 2");
+                if (dataZis.length > 0) {
+                    const latestZis = dataZis[dataZis.length - 1];
+                    renderZisCards(latestZis);
+                }
+            } catch (err) {
+                console.error("Gagal memuat tab Form Responses 2:", err);
             }
         }
 
         function renderInfakHarian(data) {
             const infakTbody = document.getElementById('infak-harian-tbody');
+            if (!infakTbody) return;
+            
             infakTbody.innerHTML = '';
-            let totalTarawih = 0, totalSubuh = 0;
+            let totalTarawih = 0;
+            let totalSubuh = 0;
 
             data.forEach((item, index) => {
-                const hari = getTextByKeyword(item, ['hari', 'ramadhan']);
-                const tanggal = getTextByKeyword(item, ['tanggal']);
-                const tarawih = getValueByKeyword(item, ['tarawih']);
-                const subuh = getValueByKeyword(item, ['subuh']);
+                const hari = getRowText(item, ['hari', 'ramadhan']);
+                const tanggal = getRowText(item, ['tanggal', 'tgl']);
+                const tarawih = getRowValue(item, ['tarawih']);
+                const subuh = getRowValue(item, ['subuh']);
                 const totalHarian = tarawih + subuh;
 
                 totalTarawih += tarawih;
@@ -433,7 +466,7 @@
                 const row = document.createElement('tr');
                 row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
                 row.innerHTML = `
-                    <td class="py-3.5 px-6 font-semibold text-gold-300">${hari}</td>
+                    <td class="py-3.5 px-6 font-semibold text-gold-300">${hari !== '-' ? hari : `Hari ke-${index + 1}`}</td>
                     <td class="py-3.5 px-6 text-slate-400">${tanggal}</td>
                     <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(tarawih)}</td>
                     <td class="py-3.5 px-6 text-right font-mono text-slate-200">${formatRp(subuh)}</td>
@@ -442,18 +475,97 @@
                 infakTbody.appendChild(row);
             });
 
-            document.getElementById('total-tarawih').innerText = formatRp(totalTarawih);
-            document.getElementById('total-subuh').innerText = formatRp(totalSubuh);
-            document.getElementById('total-gabungan-harian').innerText = formatRp(totalTarawih + totalSubuh);
+            const elTotalTarawih = document.getElementById('total-tarawih');
+            const elTotalSubuh = document.getElementById('total-subuh');
+            const elTotalGabungan = document.getElementById('total-gabungan-harian');
+
+            if (elTotalTarawih) elTotalTarawih.innerText = formatRp(totalTarawih);
+            if (elTotalSubuh) elTotalSubuh.innerText = formatRp(totalSubuh);
+            if (elTotalGabungan) elTotalGabungan.innerText = formatRp(totalTarawih + totalSubuh);
         }
 
         function renderZisCards(row) {
-            const beras = getValueByKeyword(row, ['beras', 'kg']);
-            const fitrahUang = getValueByKeyword(row, ['uang', 'fitrah']);
-            const maal = getValueByKeyword(row, ['maal']);
-            const fidyah = getValueByKeyword(row, ['fidyah']);
-    <!-- JAVASCRIPT LOGIC DENGAN GOOGLE SHEETS LIVE INTEGRATION -->
-    <script>
+            const beras = getRowValue(row, ['beras', 'kg']);
+            const fitrahUang = getRowValue(row, ['fitrah uang', 'uang', 'fitrah']);
+            const maal = getRowValue(row, ['maal', 'mal']);
+            const fidyah = getRowValue(row, ['fidyah']);
+            const infak = getRowValue(row, ['infak', 'shodaqoh', 'sedekah', 'umum']);
+
+            const elBeras = document.getElementById('zis-fitrah-beras');
+            const elFitrahUang = document.getElementById('zis-fitrah-uang');
+            const elMaal = document.getElementById('zis-maal');
+            const elFidyah = document.getElementById('zis-fidyah');
+            const elInfak = document.getElementById('zis-infak-umum');
+
+            if (elBeras) elBeras.innerText = `${beras.toLocaleString('id-ID')} Kg`;
+            if (elFitrahUang) elFitrahUang.innerText = formatRp(fitrahUang);
+            if (elMaal) elMaal.innerText = formatRp(maal);
+            if (elFidyah) elFidyah.innerText = formatRp(fidyah);
+            if (elInfak) elInfak.innerText = formatRp(infak);
+        }
+
+        function renderStaticSections() {
+            // Kultum
+            const kultumTbody = document.getElementById('kultum-tbody');
+            if (kultumTbody) {
+                kultumTbody.innerHTML = '';
+                staticData.kultum.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                    row.innerHTML = `
+                        <td class="py-3.5 px-6 font-semibold text-gold-300">${item.hari}</td>
+                        <td class="py-3.5 px-6 text-slate-400">${item.tanggal}</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${item.tarawih}</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${item.subuh}</td>
+                    `;
+                    kultumTbody.appendChild(row);
+                });
+            }
+
+            // Agenda
+            const agendaContainer = document.getElementById('agenda-container');
+            if (agendaContainer) {
+                agendaContainer.innerHTML = '';
+                staticData.agenda.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "glass-card rounded-2xl p-6 border border-gold-500/30 hover:border-gold-500/60 transition-all";
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs bg-gold-500/20 text-gold-300 font-bold px-3 py-1 rounded-full border border-gold-500/30">${item.tanggal_badge}</span>
+                            <span class="text-[11px] text-emerald-400 font-medium">${item.waktu}</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2">${item.judul}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">${item.deskripsi}</p>
+                        <div class="text-[11px] text-slate-400 flex items-center">
+                            <i class="fa-solid fa-location-dot text-gold-400 mr-2"></i> ${item.lokasi}
+                        </div>
+                    `;
+                    agendaContainer.appendChild(card);
+                });
+            }
+
+            // Galeri
+            const galeriContainer = document.getElementById('galeri-container');
+            if (galeriContainer) {
+                galeriContainer.innerHTML = '';
+                staticData.galeri.forEach(item => {
+                    const imgCard = document.createElement('div');
+                    imgCard.className = "group relative overflow-hidden rounded-2xl border border-gold-500/20 aspect-square";
+                    imgCard.innerHTML = `
+                        <img src="${item.url}" alt="${item.judul}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                            <p class="text-xs font-bold text-gold-300">${item.judul}</p>
+                            <p class="text-[10px] text-slate-300">${item.ket}</p>
+                        </div>
+                    `;
+                    galeriContainer.appendChild(imgCard);
+                });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', renderAllData);
+    </script>
+
         const SPREADSHEET_ID = "1h2YSAsX4ohdkN5D3db-Q2AHs7ESdOrcEnmRXVFSgwHw";
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
 
