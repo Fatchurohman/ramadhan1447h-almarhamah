@@ -53,6 +53,10 @@
             background-image: radial-gradient(#ca8a04 0.5px, transparent 0.5px);
             background-size: 24px 24px;
         }
+        /* Mencegah kartu galeri terbelah di tengah kolom */
+        .break-inside-avoid {
+            break-inside: avoid;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-gold-500 selection:text-emerald-950">
@@ -65,7 +69,7 @@
     </div>
 
     <!-- NAVIGATION HEADER -->
-    <header class="sticky top-0 z-50 bg-emerald-950/90 backdrop-blur-md border-b border-gold-500/20 shadow-xl">
+    <header class="sticky top-0 z-40 bg-emerald-950/90 backdrop-blur-md border-b border-gold-500/20 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center p-0.5 shadow-lg shadow-gold-500/10 shrink-0">
@@ -150,7 +154,7 @@
                             </tr>
                         </thead>
                         <tbody id="kultum-tbody" class="divide-y divide-slate-800/80">
-                            <!-- Render via JS -->
+                            <tr><td colspan="4" class="py-8 text-center text-slate-500">Memuat jadwal kultum...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -169,7 +173,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="agenda-container">
-                <!-- Render via JS -->
+                <div class="col-span-full py-8 text-center text-slate-500">Memuat agenda kegiatan...</div>
             </div>
         </div>
     </section>
@@ -277,21 +281,36 @@
         </div>
     </section>
 
-    <!-- SECTION 5: GALERI FOTO KEGIATAN -->
+    <!-- SECTION 5: GALERI FOTO KEGIATAN (RESPONSIVE MASONRY GRID) -->
     <section id="galeri" class="py-20 pattern-bg relative border-t border-gold-500/10">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
                 <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Dokumentasi —</span>
                 <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Galeri Kegiatan Ramadhan</h3>
-                <p class="text-slate-400 text-xs sm:text-sm">Dokumentasi momen kebersamaan ibadah jamaah Masjid Al-Marhamah</p>
+                <p class="text-slate-400 text-xs sm:text-sm">Dokumentasi momen kebersamaan ibadah jamaah Masjid Al-Marhamah (Klik foto untuk perbesar)</p>
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="galeri-container">
-                <!-- Render via JS -->
+            <!-- MASONRY CONTAINER: Menyesuaikan Foto Portrait Maupun Landscape Tanpa Terpotong -->
+            <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4" id="galeri-container">
+                <div class="py-8 text-center text-slate-500">Memuat galeri foto...</div>
             </div>
         </div>
     </section>
+
+    <!-- LIGHTBOX / MODAL PREVIEW FOTO FULLSCREEN -->
+    <div id="image-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300">
+        <div class="relative max-w-5xl w-full flex flex-col items-center">
+            <button onclick="closeModal()" class="absolute -top-12 right-0 text-white hover:text-gold-400 text-3xl font-bold p-2 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img id="modal-img" src="" alt="Preview" class="max-h-[80vh] w-auto max-w-full rounded-2xl border border-gold-500/40 shadow-2xl object-contain">
+            <div class="mt-4 text-center">
+                <h4 id="modal-title" class="text-lg font-bold text-gold-300 font-amiri"></h4>
+                <p id="modal-desc" class="text-xs text-slate-300 mt-1"></p>
+            </div>
+        </div>
+    </div>
 
     <!-- SECTION 6: BANNER WEB GABUNGAN 5 MASJID -->
     <section id="gabungan" class="py-16 bg-gradient-to-b from-emerald-950 to-slate-950 relative border-t border-gold-500/20">
@@ -331,12 +350,12 @@
         </div>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC DIRECT PUB-CSV PARSER -->
+    <!-- JAVASCRIPT LOGIC DIRECT PUB-CSV PARSER & MASONRY GALLERY LIGHTBOX -->
     <script>
         const PUB_ID = "2PACX-1vQlnha4zl9yZmLhBF_61oiBO0j3P_B9J0VahSD9o3iSq_ke7qz7PRhycU06M5LYp5dqVeVBqV5e9i5_";
         const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
 
-        const staticData = {
+        const fallbackData = {
             kultum: [
                 { hari: "Ramadhan 1", tanggal: "19 Feb 2026", tarawih: "Ust. Ahmad Hidayat, S.Ag", subuh: "Ust. Muhammad Ridwan, M.A" },
                 { hari: "Ramadhan 2", tanggal: "20 Feb 2026", tarawih: "Ust. Dr. H. Abdul Ghofur", subuh: "Ust. Ahmad Hidayat, S.Ag" },
@@ -348,12 +367,23 @@
                 { tanggal_badge: "10 Malam Terakhir", waktu: "01.00 WIB", judul: "I'tikaf & Qiyamul Lail", deskripsi: "Penyelenggaraan sholat malam berjamaah & sahur bersama pemburu Lailatul Qadar.", lokasi: "Ruang Utama Masjid" }
             ],
             galeri: [
-                { judul: "Sholat Tarawih Berjamaah", ket: "Malam 1 Ramadhan", url: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Pembagian Takjil", ket: "Serambi Masjid", url: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Tadarus Al-Qur'an", ket: "Ba'da Tarawih", url: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=600&auto=format&fit=crop" },
-                { judul: "Posko Amil Zakat", ket: "Pelayanan ZIS", url: "https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=600&auto=format&fit=crop" }
+                { judul: "Sholat Tarawih Berjamaah", ket: "Malam 1 Ramadhan", url: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop" },
+                { judul: "Pembagian Takjil", ket: "Serambi Masjid", url: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=800&auto=format&fit=crop" },
+                { judul: "Tadarus Al-Qur'an", ket: "Ba'da Tarawih", url: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=800&auto=format&fit=crop" },
+                { judul: "Posko Amil Zakat", ket: "Pelayanan ZIS", url: "https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=800&auto=format&fit=crop" }
             ]
         };
+
+        // Otomatis ubah Google Drive Share Link menjadi Direct Image URL
+        function formatImageUrl(rawUrl) {
+            if (!rawUrl || typeof rawUrl !== 'string') return '';
+            const trimmed = rawUrl.trim();
+            const match = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/) || trimmed.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+            }
+            return trimmed;
+        }
 
         function parseCSVLine(text) {
             const result = [];
@@ -384,7 +414,6 @@
                 if (lines.length <= 1) return [];
                 return lines.slice(1).map(l => parseCSVLine(l));
             } catch (e) {
-                console.error("Gagal fetch CSV untuk tab:", tabName, e);
                 return [];
             }
         }
@@ -398,9 +427,19 @@
         }
 
         async function renderAllData() {
-            renderStaticSections();
+            // 1. KULTUM
+            const rowsKultum = await fetchPubCSV("Kultum");
+            renderKultum(rowsKultum.length > 0 ? rowsKultum : null);
 
-            // 1. Ambil Tab 1: Form_Responses (Infak Harian)
+            // 2. AGENDA
+            const rowsAgenda = await fetchPubCSV("Agenda");
+            renderAgenda(rowsAgenda.length > 0 ? rowsAgenda : null);
+
+            // 3. GALERI (MASONRY)
+            const rowsGaleri = await fetchPubCSV("Galeri");
+            renderGaleri(rowsGaleri.length > 0 ? rowsGaleri : null);
+
+            // 4. INFAK HARIAN
             try {
                 const rowsInfak = await fetchPubCSV("Form_Responses");
                 if (rowsInfak && rowsInfak.length > 0) {
@@ -418,7 +457,7 @@
                 console.error("Error Infak:", e);
             }
 
-            // 2. Ambil Tab 2: Form_Responses2 (ZIS)
+            // 5. LAPORAN ZIS
             try {
                 const rowsZis = await fetchPubCSV("Form_Responses2");
                 if (rowsZis && rowsZis.length > 0) {
@@ -429,6 +468,160 @@
             }
         }
 
+        function renderKultum(rows) {
+            const tbody = document.getElementById('kultum-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (rows) {
+                rows.forEach((row, index) => {
+                    const hari = row[0] ? row[0] : `Ramadhan ${index + 1}`;
+                    const tanggal = row[1] ? row[1] : '-';
+                    const tarawih = row[2] ? row[2] : '-';
+                    const subuh = row[3] ? row[3] : '-';
+
+                    const tr = document.createElement('tr');
+                    tr.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                    tr.innerHTML = `
+                        <td class="py-3.5 px-6 font-semibold text-gold-300">${hari}</td>
+                        <td class="py-3.5 px-6 text-slate-400">${tanggal}</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${tarawih}</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${subuh}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                fallbackData.kultum.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                    tr.innerHTML = `
+                        <td class="py-3.5 px-6 font-semibold text-gold-300">${item.hari}</td>
+                        <td class="py-3.5 px-6 text-slate-400">${item.tanggal}</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${item.tarawih}</td>
+                        <td class="py-3.5 px-6 font-medium text-white">${item.subuh}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function renderAgenda(rows) {
+            const container = document.getElementById('agenda-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (rows) {
+                rows.forEach(row => {
+                    const badge = row[0] ? row[0] : 'Ramadhan';
+                    const waktu = row[1] ? row[1] : '';
+                    const judul = row[2] ? row[2] : '';
+                    const deskripsi = row[3] ? row[3] : '';
+                    const lokasi = row[4] ? row[4] : 'Masjid Al-Marhamah';
+
+                    const card = document.createElement('div');
+                    card.className = "glass-card rounded-2xl p-6 border border-gold-500/30 hover:border-gold-500/60 transition-all";
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs bg-gold-500/20 text-gold-300 font-bold px-3 py-1 rounded-full border border-gold-500/30">${badge}</span>
+                            <span class="text-[11px] text-emerald-400 font-medium">${waktu}</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2">${judul}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">${deskripsi}</p>
+                        <div class="text-[11px] text-slate-400 flex items-center">
+                            <i class="fa-solid fa-location-dot text-gold-400 mr-2"></i> ${lokasi}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } else {
+                fallbackData.agenda.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "glass-card rounded-2xl p-6 border border-gold-500/30 hover:border-gold-500/60 transition-all";
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs bg-gold-500/20 text-gold-300 font-bold px-3 py-1 rounded-full border border-gold-500/30">${item.tanggal_badge}</span>
+                            <span class="text-[11px] text-emerald-400 font-medium">${item.waktu}</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-2">${item.judul}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-4">${item.deskripsi}</p>
+                        <div class="text-[11px] text-slate-400 flex items-center">
+                            <i class="fa-solid fa-location-dot text-gold-400 mr-2"></i> ${item.lokasi}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        // RENDER GALERI MASONRY (MENDUKUNG FOTO PORTRAIT & LANDSCAPE DENGAN TINGGI ALAMI)
+        function renderGaleri(rows) {
+            const container = document.getElementById('galeri-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const list = rows ? rows.map(r => ({
+                judul: r[0] ? r[0] : 'Dokumentasi Kegiatan',
+                ket: r[1] ? r[1] : '',
+                url: formatImageUrl(r[2])
+            })).filter(item => item.url !== '') : fallbackData.galeri;
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "break-inside-avoid group relative overflow-hidden rounded-2xl border border-gold-500/20 shadow-lg cursor-pointer bg-emerald-950/40 hover:border-gold-500/60 transition-all duration-300";
+                
+                // Event klik untuk membuka Lightbox Preview
+                card.onclick = () => openModal(item.url, item.judul, item.ket);
+
+                card.innerHTML = `
+                    <img src="${item.url}" alt="${item.judul}" loading="lazy" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-end">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-bold text-gold-300">${item.judul}</p>
+                                <p class="text-[10px] text-slate-300 mt-0.5">${item.ket}</p>
+                            </div>
+                            <span class="w-8 h-8 rounded-full bg-gold-500/20 text-gold-300 border border-gold-500/40 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // FUNGSI MODAL PREVIEW FOTO
+        function openModal(src, title, desc) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDesc = document.getElementById('modal-desc');
+
+            modalImg.src = src;
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // Mencegah scrolling latar
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Tutup modal jika klik di luar gambar atau tekan tombol ESC
+        document.getElementById('image-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
         function renderInfakHarian(rows) {
             const tbody = document.getElementById('infak-harian-tbody');
             if (!tbody) return;
@@ -438,7 +631,6 @@
             let totalSubuh = 0;
 
             rows.forEach((row, index) => {
-                // Kolom 0=Timestamp, 1=Tanggal, 2=Infaq Tarawih, 3=Infaq Subuh
                 const hari = `Ramadhan ${index + 1}`;
                 const tanggal = row[1] ? String(row[1]) : '-';
                 const tarawih = parseNum(row[2]);
@@ -475,7 +667,6 @@
             let totalFidyah = 0;
             let totalInfak = 0;
 
-            // Kolom 0=Timestamp, 1=Tanggal, 2=Zakat Fitrah(Kg), 3=Zakat Mal(Rp), 4=Fidyah(Rp), 5=Infaq/Shodaqoh(Rp)
             rows.forEach(row => {
                 totalBeras += parseNum(row[2]);
                 totalMaal += parseNum(row[3]);
@@ -494,62 +685,6 @@
             if (elMaal) elMaal.innerText = formatRp(totalMaal);
             if (elFidyah) elFidyah.innerText = formatRp(totalFidyah);
             if (elInfak) elInfak.innerText = formatRp(totalInfak);
-        }
-
-        function renderStaticSections() {
-            const kultumTbody = document.getElementById('kultum-tbody');
-            if (kultumTbody) {
-                kultumTbody.innerHTML = '';
-                staticData.kultum.forEach((item, index) => {
-                    const row = document.createElement('tr');
-                    row.className = index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
-                    row.innerHTML = `
-                        <td class="py-3.5 px-6 font-semibold text-gold-300">${item.hari}</td>
-                        <td class="py-3.5 px-6 text-slate-400">${item.tanggal}</td>
-                        <td class="py-3.5 px-6 font-medium text-white">${item.tarawih}</td>
-                        <td class="py-3.5 px-6 font-medium text-white">${item.subuh}</td>
-                    `;
-                    kultumTbody.appendChild(row);
-                });
-            }
-
-            const agendaContainer = document.getElementById('agenda-container');
-            if (agendaContainer) {
-                agendaContainer.innerHTML = '';
-                staticData.agenda.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = "glass-card rounded-2xl p-6 border border-gold-500/30 hover:border-gold-500/60 transition-all";
-                    card.innerHTML = `
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs bg-gold-500/20 text-gold-300 font-bold px-3 py-1 rounded-full border border-gold-500/30">${item.tanggal_badge}</span>
-                            <span class="text-[11px] text-emerald-400 font-medium">${item.waktu}</span>
-                        </div>
-                        <h4 class="text-lg font-bold text-white mb-2">${item.judul}</h4>
-                        <p class="text-xs text-slate-300 leading-relaxed mb-4">${item.deskripsi}</p>
-                        <div class="text-[11px] text-slate-400 flex items-center">
-                            <i class="fa-solid fa-location-dot text-gold-400 mr-2"></i> ${item.lokasi}
-                        </div>
-                    `;
-                    agendaContainer.appendChild(card);
-                });
-            }
-
-            const galeriContainer = document.getElementById('galeri-container');
-            if (galeriContainer) {
-                galeriContainer.innerHTML = '';
-                staticData.galeri.forEach(item => {
-                    const imgCard = document.createElement('div');
-                    imgCard.className = "group relative overflow-hidden rounded-2xl border border-gold-500/20 aspect-square";
-                    imgCard.innerHTML = `
-                        <img src="${item.url}" alt="${item.judul}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
-                            <p class="text-xs font-bold text-gold-300">${item.judul}</p>
-                            <p class="text-[10px] text-slate-300">${item.ket}</p>
-                        </div>
-                    `;
-                    galeriContainer.appendChild(imgCard);
-                });
-            }
         }
 
         window.addEventListener('DOMContentLoaded', renderAllData);
