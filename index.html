@@ -53,7 +53,6 @@
             background-image: radial-gradient(#ca8a04 0.5px, transparent 0.5px);
             background-size: 24px 24px;
         }
-        /* Mencegah kartu galeri terbelah di tengah kolom */
         .break-inside-avoid {
             break-inside: avoid;
         }
@@ -80,7 +79,7 @@
                 <div>
                     <h1 class="text-base sm:text-lg font-bold text-white tracking-wide leading-tight">PANITIA RAMADHAN 1447 H</h1>
                     <p class="text-xs sm:text-sm font-bold text-gold-400 uppercase tracking-wider">MASJID AL-MARHAMAH</p>
-                    <p class="text-[11px] text-slate-300 font-medium">Perum Candi Gebang Permai</p>
+                    <p class="text-[11px] text-slate-300 font-medium">Perum Candi Gebang Permai, Ngemplak</p>
                 </div>
             </div>
 
@@ -92,7 +91,7 @@
                 <a href="#zis" class="text-slate-300 hover:text-gold-400 transition-colors">Laporan ZIS</a>
                 <a href="#infak-harian" class="text-slate-300 hover:text-gold-400 transition-colors">Infak Harian</a>
                 <a href="#galeri" class="text-slate-300 hover:text-gold-400 transition-colors">Galeri</a>
-                <a href="#gabungan" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 px-4 py-2 rounded-full font-bold shadow-md hover:shadow-gold-500/20 transition-all text-xs">
+                <a href="gabungan.html" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 px-4 py-2 rounded-full font-bold shadow-md hover:shadow-gold-500/20 transition-all text-xs">
                     <i class="fa-solid fa-users-rays mr-1.5"></i> Web Gabungan 5 Masjid
                 </a>
             </nav>
@@ -291,7 +290,6 @@
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
             </div>
 
-            <!-- MASONRY CONTAINER: Menyesuaikan Foto Portrait Maupun Landscape Tanpa Terpotong -->
             <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4" id="galeri-container">
                 <div class="py-8 text-center text-slate-500">Memuat galeri foto...</div>
             </div>
@@ -312,7 +310,7 @@
         </div>
     </div>
 
-    <!-- SECTION 6: BANNER WEB GABUNGAN 5 MASJID -->
+    <!-- SECTION 6: BANNER WEB GABUNGAN 5 MASJID (LINK SUDAH AKTIF KE gabungan.html) -->
     <section id="gabungan" class="py-16 bg-gradient-to-b from-emerald-950 to-slate-950 relative border-t border-gold-500/20">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="glass-card rounded-3xl p-8 sm:p-12 border-2 border-gold-500/40 text-center relative overflow-hidden shadow-2xl">
@@ -327,7 +325,7 @@
                     <p class="text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
                         Untuk melihat rekapitulasi perolehan ZIS tingkat wilayah serta laporan Infak Pelaksanaan Sholat Idul Fitri Gabungan 5 Masjid, silakan kunjungi website resmi panitia gabungan.
                     </p>
-                    <a href="#" target="_blank" class="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-xl transition-all text-sm">
+                    <a href="gabungan.html" class="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-xl transition-all text-sm">
                         <span>🕌 Buka Website Panitia Gabungan 5 Masjid</span>
                         <i class="fa-solid fa-arrow-right-long"></i>
                     </a>
@@ -341,7 +339,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
                 <p class="font-semibold text-slate-300">© 1447 H / 2026 M Panitia Ramadhan Masjid Al-Marhamah.</p>
-                <p class="text-slate-500 mt-0.5">Perum Candi Gebang Permai, Depok, Sleman, DI Yogyakarta.</p>
+                <p class="text-slate-500 mt-0.5">Perum Candi Gebang Permai, Ngemplak, Sleman, DI Yogyakarta.</p>
             </div>
             <a href="https://github.com/fatchurohman/ramadhan1447h-almarhamah" target="_blank" class="hover:text-gold-400 transition-colors flex items-center space-x-1">
                 <i class="fa-brands fa-github text-base"></i>
@@ -374,7 +372,6 @@
             ]
         };
 
-        // Otomatis ubah Google Drive Share Link menjadi Direct Image URL
         function formatImageUrl(rawUrl) {
             if (!rawUrl || typeof rawUrl !== 'string') return '';
             const trimmed = rawUrl.trim();
@@ -553,7 +550,6 @@
             }
         }
 
-        // RENDER GALERI MASONRY (MENDUKUNG FOTO PORTRAIT & LANDSCAPE DENGAN TINGGI ALAMI)
         function renderGaleri(rows) {
             const container = document.getElementById('galeri-container');
             if (!container) return;
@@ -569,7 +565,6 @@
                 const card = document.createElement('div');
                 card.className = "break-inside-avoid group relative overflow-hidden rounded-2xl border border-gold-500/20 shadow-lg cursor-pointer bg-emerald-950/40 hover:border-gold-500/60 transition-all duration-300";
                 
-                // Event klik untuk membuka Lightbox Preview
                 card.onclick = () => openModal(item.url, item.judul, item.ket);
 
                 card.innerHTML = `
@@ -590,7 +585,6 @@
             });
         }
 
-        // FUNGSI MODAL PREVIEW FOTO
         function openModal(src, title, desc) {
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-img');
@@ -603,7 +597,7 @@
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // Mencegah scrolling latar
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
@@ -613,7 +607,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Tutup modal jika klik di luar gambar atau tekan tombol ESC
         document.getElementById('image-modal').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
