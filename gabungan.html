@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panitia Gabungan 5 Masjid - Sholat Idul Fitri 1447 H</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Amiri & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: { 850: '#064e3b', 900: '#022c22', 950: '#011c16' },
+                        gold: { 300: '#fde047', 400: '#facc15', 500: '#eab308', 600: '#ca8a04', 700: '#a16207' }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        amiri: ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(2, 44, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(234, 179, 8, 0.25);
+        }
+        .hero-bg {
+            background: linear-gradient(180deg, rgba(1, 28, 22, 0.7) 0%, rgba(1, 28, 22, 0.98) 100%), 
+                        url('https://images.unsplash.com/photo-1590076215667-875d4ef2d7ee?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .pattern-bg {
+            background-color: #011c16;
+            background-image: radial-gradient(#ca8a04 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-gold-500 selection:text-emerald-950">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-emerald-900 border-b border-gold-500/30 text-gold-300 text-xs sm:text-sm py-2.5 px-4 text-center font-semibold shadow-md">
+        <span>🌙 PANDUAN RESMI & TRANSPARANSI PENYELENGGARAAN SHOLAT IDUL FITRI 1447 H — GABUNGAN 5 MASJID 🌙</span>
+    </div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-emerald-950/95 backdrop-blur-md border-b border-gold-500/20 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center p-0.5 shadow-lg shadow-gold-500/10 shrink-0">
+                    <div class="w-full h-full bg-emerald-950 rounded-2xl flex items-center justify-center">
+                        <span class="font-amiri text-gold-400 text-2xl">🕌</span>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-extrabold text-white tracking-wide leading-tight">PANITIA GABUNGAN 5 MASJID</h1>
+                    <p class="text-xs sm:text-sm font-bold text-gold-400 uppercase tracking-wider">SHOLAT IDUL FITRI 1447 H</p>
+                    <p class="text-[11px] text-slate-300 font-medium">Ngemplak, Sleman, D.I. Yogyakarta</p>
+                </div>
+            </div>
+
+            <!-- MENU LINKS (DESKTOP) -->
+            <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                <a href="#beranda" class="text-gold-400 hover:text-gold-300 transition-colors">Beranda</a>
+                <a href="#petugas" class="text-slate-300 hover:text-gold-400 transition-colors">Imam & Khatib</a>
+                <a href="#woro-woro" class="text-slate-300 hover:text-gold-400 transition-colors">Woro-Woro</a>
+                <a href="#rekap-zis" class="text-slate-300 hover:text-gold-400 transition-colors">Rekap ZIS 5 Masjid</a>
+                <a href="#infak-id" class="text-slate-300 hover:text-gold-400 transition-colors">Infak Sholat Id</a>
+                <a href="index.html" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 px-4 py-2 rounded-full font-bold shadow-md hover:shadow-gold-500/20 transition-all text-xs">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Web Masjid Al-Marhamah
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="beranda" class="hero-bg relative min-h-[75vh] flex items-center justify-center text-center px-4 py-16">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div class="inline-flex items-center space-x-2 bg-emerald-900/80 border border-gold-500/40 rounded-full px-4 py-1.5 backdrop-blur-md">
+                <i class="fa-solid fa-star-and-crescent text-gold-400 text-xs"></i>
+                <span class="text-xs font-semibold text-gold-300 uppercase tracking-widest">Portal Informasi Bersama 5 Masjid</span>
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight font-amiri tracking-wide">
+                Penyelenggaraan Sholat Idul Fitri 1447 H<br/>
+                <span class="gold-gradient-text">Kebersamaan Umat 5 Masjid</span>
+            </h2>
+
+            <!-- LIST 5 MASJID CHIP -->
+            <div class="flex flex-wrap items-center justify-center gap-2 pt-2">
+                <span class="bg-emerald-950/80 border border-gold-500/40 text-gold-300 text-xs px-3 py-1.5 rounded-xl font-medium">1. Masjid Al-Marhamah PCGP</span>
+                <span class="bg-emerald-950/80 border border-gold-500/40 text-gold-300 text-xs px-3 py-1.5 rounded-xl font-medium">2. Masjid Nurul Jariyah Jambusari</span>
+                <span class="bg-emerald-950/80 border border-gold-500/40 text-gold-300 text-xs px-3 py-1.5 rounded-xl font-medium">3. Masjid Al-Hidayah Krajan</span>
+                <span class="bg-emerald-950/80 border border-gold-500/40 text-gold-300 text-xs px-3 py-1.5 rounded-xl font-medium">4. Masjid Baitul Makmur Gebang</span>
+                <span class="bg-emerald-950/80 border border-gold-500/40 text-gold-300 text-xs px-3 py-1.5 rounded-xl font-medium">5. Masjid Al-Muttakin Jetis</span>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#petugas" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-emerald-950 font-bold rounded-xl shadow-lg shadow-gold-500/20 transition-all text-sm">
+                    <i class="fa-solid fa-user-tie mr-2"></i> Petugas Sholat Id
+                </a>
+                <a href="#woro-woro" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-900/80 hover:bg-emerald-800 text-gold-300 font-semibold rounded-xl border border-gold-500/30 backdrop-blur-md transition-all text-sm">
+                    <i class="fa-solid fa-bullhorn mr-2"></i> Woro-Woro & Panduan
+                </a>
+                <a href="#rekap-zis" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-900/80 hover:bg-emerald-800 text-gold-300 font-semibold rounded-xl border border-gold-500/30 backdrop-blur-md transition-all text-sm">
+                    <i class="fa-solid fa-chart-pie mr-2"></i> Rekapitulasi ZIS Wilayah
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 1: DAFTAR PETUGAS SHOLAT IDUL FITRI -->
+    <section id="petugas" class="py-20 pattern-bg relative border-t border-gold-500/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Pelaksanaan Ibadah —</span>
+                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Petugas Sholat Idul Fitri 1447 H</h3>
+                <p class="text-slate-400 text-xs sm:text-sm">Imam, Khatib, dan Bilal penyelenggaraan sholat Idul Fitri gabungan</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- KHATIB -->
+                <div class="glass-card rounded-2xl p-6 text-center border border-gold-500/30 hover:border-gold-500/60 transition-all shadow-xl">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-900/80 border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
+                        <i class="fa-solid fa-microphone-lines"></i>
+                    </div>
+                    <span class="text-[11px] uppercase font-bold tracking-widest text-gold-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">Khatib / Penceramah</span>
+                    <h4 id="nama-khatib" class="text-lg font-bold text-white mt-4 mb-1">Ust. Dr. H. Abdul Ghofur, M.Ag</h4>
+                    <p class="text-xs text-slate-300">Dosen & Mubaligh PWM D.I. Yogyakarta</p>
+                    <div class="mt-4 pt-4 border-t border-emerald-900/80 text-xs text-slate-400 italic">
+                        "Tema Khutbah: Merajut Ukhuwah, Mengokohkan Kesalehan Sosial"
+                    </div>
+                </div>
+
+                <!-- IMAM -->
+                <div class="glass-card rounded-2xl p-6 text-center border border-gold-500/50 hover:border-gold-500 transition-all shadow-2xl relative overflow-hidden bg-gradient-to-b from-emerald-900/40 to-emerald-950/80">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center mx-auto mb-4 text-emerald-950 text-2xl font-bold shadow-md">
+                        <i class="fa-solid fa-hands-praying"></i>
+                    </div>
+                    <span class="text-[11px] uppercase font-bold tracking-widest text-emerald-950 bg-gold-400 px-3 py-1 rounded-full font-bold">Imam Sholat Id</span>
+                    <h4 id="nama-imam" class="text-xl font-extrabold text-gold-300 mt-4 mb-1">Ust. Muhammad Ridwan, S.Q., M.A.</h4>
+                    <p class="text-xs text-slate-200">Hafidz 30 Juz & Pengasuh Pesantren Tahfidz</p>
+                    <div class="mt-4 pt-4 border-t border-emerald-900/80 text-xs text-emerald-300 font-medium">
+                        Sholat Dimulai Tepat Pukul 06.45 WIB
+                    </div>
+                </div>
+
+                <!-- BILAL / PROTOKOL -->
+                <div class="glass-card rounded-2xl p-6 text-center border border-gold-500/30 hover:border-gold-500/60 transition-all shadow-xl">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-900/80 border border-gold-500/30 flex items-center justify-center mx-auto mb-4 text-gold-400 text-2xl">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <span class="text-[11px] uppercase font-bold tracking-widest text-gold-400 bg-emerald-950 px-3 py-1 rounded-full border border-emerald-800">Bilal & Protokol</span>
+                    <h4 id="nama-bilal" class="text-lg font-bold text-white mt-4 mb-1">Ust. Farhan Basalamah, Lc</h4>
+                    <p class="text-xs text-slate-300">Panitia Bidang Peribadatan Gabungan</p>
+                    <div class="mt-4 pt-4 border-t border-emerald-900/80 text-xs text-slate-400 italic">
+                        Panduan Kaifiyah Sholat Idul Fitri & Takbir Berjamaah
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: WORO-WORO & PANDUAN PELAKSANAAN -->
+    <section id="woro-woro" class="py-20 bg-slate-900/90 relative border-t border-gold-500/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Pengumuman Penting —</span>
+                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Woro-Woro & Panduan Jamaah</h3>
+                <p class="text-slate-400 text-xs sm:text-sm">Informasi tempat, waktu, tata tertib, dan arahan panitia gabungan</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <!-- INFO UTAMA (WAKTU & TEMPAT) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-gold-500">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-gold-400 text-3xl shrink-0 mt-1"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white">Tempat / Lokasi Sholat Id</h4>
+                            <p class="text-sm text-gold-300 font-semibold mt-1">Lapangan Utama Perum Candi Gebang Permai</p>
+                            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                                Lokasi terbuka terpusat untuk jamaah dari Masjid Al-Marhamah, Nurul Jariyah, Al-Hidayah, Baitul Makmur, dan Al-Muttakin.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border-l-4 border-emerald-500">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-emerald-400 text-3xl shrink-0 mt-1"><i class="fa-solid fa-clock"></i></div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white">Waktu & Jadwal Pelaksanaan</h4>
+                            <p class="text-sm text-emerald-300 font-semibold mt-1">1 Syawal 1447 H | Pukul 06.15 - Selesai WIB</p>
+                            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                                Gema Takbir dimulai pukul 06.00 WIB. Pelaksanaan Sholat Idul Fitri akan dimulai tepat pukul 06.45 WIB.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAIL PANDUAN LAINNYA -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card rounded-2xl p-5 border border-gold-500/20">
+                    <div class="text-gold-400 text-xl mb-3"><i class="fa-solid fa-faucet-drip"></i></div>
+                    <h5 class="text-sm font-bold text-white mb-1.5">Berwudhu Dari Rumah</h5>
+                    <p class="text-xs text-slate-300 leading-relaxed">Dihimbau seluruh jamaah sudah berwudhu dari rumah guna kelancaran dan menghindari antrean air di lapangan.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 border border-gold-500/20">
+                    <div class="text-gold-400 text-xl mb-3"><i class="fa-solid fa-rug"></i></div>
+                    <h5 class="text-sm font-bold text-white mb-1.5">Membawa Sajadah Sendiri</h5>
+                    <p class="text-xs text-slate-300 leading-relaxed">Panitia menyediakan alas terpal/karpet dasar, namun jamaah disunnahkan membawa sajadah dan alas pribadi.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 border border-gold-500/20">
+                    <div class="text-gold-400 text-xl mb-3"><i class="fa-solid fa-square-parking"></i></div>
+                    <h5 class="text-sm font-bold text-white mb-1.5">Kantong Parkir Tertib</h5>
+                    <p class="text-xs text-slate-300 leading-relaxed">Parkir kendaraan roda 2 dan roda 4 telah diatur oleh petugas Kokam/Banser di sepanjang jalan akses sayap timur & barat.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 border border-gold-500/20">
+                    <div class="text-gold-400 text-xl mb-3"><i class="fa-solid fa-trash-arrow-up"></i></div>
+                    <h5 class="text-sm font-bold text-white mb-1.5">Gerakan Sedekah Sampah</h5>
+                    <p class="text-xs text-slate-300 leading-relaxed">Menjaga kebersihan lapangan bersama dengan membawa kembali koran/alas plastik bekas ke tong sampah yang disediakan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: REKAPITULASI PENGUMPULAN ZIS TINGKAT GABUNGAN 5 MASJID -->
+    <section id="rekap-zis" class="py-20 pattern-bg relative border-t border-gold-500/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Rekapitulasi Wilayah —</span>
+                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Laporan ZIS Gabungan 5 Masjid</h3>
+                <p class="text-slate-400 text-xs sm:text-sm">Total pengumpulan Zakat Fitrah, Zakat Mal, Fidyah, dan Infaq Shodaqoh Ramadhan 1447 H</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <!-- RINGKASAN AKUMULASI 4 KARTU BESAR -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="glass-card rounded-2xl p-6 text-center shadow-xl border border-gold-500/30">
+                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-3 text-gold-400 text-2xl">
+                        <i class="fa-solid fa-wheat-awn"></i>
+                    </div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Zakat Fitrah</h4>
+                    <p id="total-fitrah-beras" class="text-2xl font-extrabold text-gold-400 my-1">0 Kg</p>
+                    <p id="total-fitrah-uang" class="text-xs text-slate-300 font-semibold font-mono">Rp 0</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center shadow-xl border border-gold-500/30">
+                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-3 text-gold-400 text-2xl">
+                        <i class="fa-solid fa-vault"></i>
+                    </div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Zakat Mal</h4>
+                    <p id="total-zakat-mal" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
+                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-0.5 rounded-full">5 Masjid</span>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center shadow-xl border border-gold-500/30">
+                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-3 text-gold-400 text-2xl">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                    </div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Fidyah</h4>
+                    <p id="total-fidyah" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
+                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-0.5 rounded-full">5 Masjid</span>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center shadow-xl border border-gold-500/30">
+                    <div class="w-12 h-12 bg-emerald-900/80 rounded-2xl border border-gold-500/30 flex items-center justify-center mx-auto mb-3 text-gold-400 text-2xl">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Infaq / Sedekah</h4>
+                    <p id="total-infaq-umum" class="text-2xl font-extrabold text-gold-400 my-2">Rp 0</p>
+                    <span class="text-[10px] text-emerald-400 bg-emerald-950 border border-emerald-800 px-2.5 py-0.5 rounded-full">5 Masjid</span>
+                </div>
+            </div>
+
+            <!-- TABEL REKAP DETAIL PER MASJID -->
+            <div class="glass-card rounded-2xl border border-gold-500/30 overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-emerald-950 text-gold-400 text-xs uppercase font-bold tracking-wider border-b border-gold-500/30">
+                            <tr>
+                                <th class="py-4 px-5">No</th>
+                                <th class="py-4 px-5">Nama Masjid</th>
+                                <th class="py-4 px-5 text-right">Fitrah Beras (Kg)</th>
+                                <th class="py-4 px-5 text-right">Fitrah Uang (Rp)</th>
+                                <th class="py-4 px-5 text-right">Zakat Mal (Rp)</th>
+                                <th class="py-4 px-5 text-right">Fidyah (Rp)</th>
+                                <th class="py-4 px-5 text-right">Infaq/Shodaqoh (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rekap-zis-tbody" class="divide-y divide-slate-800/80">
+                            <!-- Render via JS -->
+                        </tbody>
+                        <tfoot class="bg-emerald-950 border-t-2 border-gold-500/40 text-white font-bold text-xs uppercase">
+                            <tr>
+                                <td colspan="2" class="py-5 px-5 text-gold-400">TOTAL GABUNGAN 5 MASJID</td>
+                                <td id="foot-fitrah-beras" class="py-5 px-5 text-right font-mono text-gold-300 text-sm">0 Kg</td>
+                                <td id="foot-fitrah-uang" class="py-5 px-5 text-right font-mono text-slate-200">Rp 0</td>
+                                <td id="foot-zakat-mal" class="py-5 px-5 text-right font-mono text-slate-200">Rp 0</td>
+                                <td id="foot-fidyah" class="py-5 px-5 text-right font-mono text-slate-200">Rp 0</td>
+                                <td id="foot-infaq-umum" class="py-5 px-5 text-right font-mono text-gold-400 text-sm font-extrabold">Rp 0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: LAPORAN PEROLEHAN INFAK SHOLAT IDUL FITRI -->
+    <section id="infak-id" class="py-20 bg-slate-900/90 relative border-t border-gold-500/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span class="text-gold-400 text-xs font-bold uppercase tracking-widest">— Kas Lapangan Sholat Id —</span>
+                <h3 class="text-2xl sm:text-4xl font-bold text-white font-amiri">Laporan Kas Infak Sholat Idul Fitri 1447 H</h3>
+                <p class="text-slate-400 text-xs sm:text-sm">Rincian perolehan kotak infak lapangan dan operasional kepanitiaan bersama</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <!-- KARTU SALDO AKHIR -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card rounded-2xl p-6 text-center border-l-4 border-emerald-400">
+                    <span class="text-xs font-bold uppercase text-slate-400 tracking-wider">Total Pemasukan Infak Lapangan</span>
+                    <h4 id="kas-total-masuk" class="text-2xl font-extrabold text-emerald-400 mt-2">Rp 0</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Kotak amal sholat Idul Fitri</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center border-l-4 border-rose-400">
+                    <span class="text-xs font-bold uppercase text-slate-400 tracking-wider">Total Pengeluaran Operasional</span>
+                    <h4 id="kas-total-keluar" class="text-2xl font-extrabold text-rose-400 mt-2">Rp 0</h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Sound system, terop, kebersihan, dll.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center border-l-4 border-gold-400 bg-emerald-950/60">
+                    <span class="text-xs font-bold uppercase text-gold-300 tracking-wider">Saldo Kas Bersih Tersisa</span>
+                    <h4 id="kas-saldo-akhir" class="text-2xl font-extrabold text-gold-400 mt-2">Rp 0</h4>
+                    <p class="text-[11px] text-emerald-300 mt-1">Dialokasikan untuk kas gabungan / sosial</p>
+                </div>
+            </div>
+
+            <!-- RINCIAN MUTASI KAS LAPANGAN -->
+            <div class="glass-card rounded-2xl border border-gold-500/30 overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-emerald-950 text-gold-400 text-xs uppercase font-bold tracking-wider border-b border-gold-500/30">
+                            <tr>
+                                <th class="py-4 px-6">Jenis Mutasi</th>
+                                <th class="py-4 px-6">Uraian / Keterangan</th>
+                                <th class="py-4 px-6 text-right">Jumlah (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="infak-id-tbody" class="divide-y divide-slate-800/80">
+                            <!-- Render via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-semibold text-slate-300">© 1447 H / 2026 M Panitia Gabungan Penyelenggaraan Sholat Idul Fitri 5 Masjid.</p>
+                <p class="text-slate-500 mt-0.5">Al-Marhamah • Nurul Jariyah • Al-Hidayah • Baitul Makmur • Al-Muttakin (Ngemplak, Sleman).</p>
+            </div>
+            <a href="index.html" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors flex items-center space-x-1">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Kembali ke Web Masjid Al-Marhamah</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC DIRECT RENDERING & COMPUTATION -->
+    <script>
+        const formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+
+        // DATA DEFAULT PANITIA GABUNGAN 5 MASJID (BISA LANGSUNG TERUPDATE)
+        const defaultData = {
+            zis: [
+                { no: 1, nama: "Masjid Al-Marhamah PCGP", fitrah_beras: 450, fitrah_uang: 3500000, maal: 12500000, fidyah: 2100000, infaq: 4800000 },
+                { no: 2, nama: "Masjid Nurul Jariyah Jambusari", fitrah_beras: 380, fitrah_uang: 2800000, maal: 8400000, fidyah: 1500000, infaq: 3200000 },
+                { no: 3, nama: "Masjid Al-Hidayah Krajan", fitrah_beras: 520, fitrah_uang: 4200000, maal: 15000000, fidyah: 2800000, infaq: 5100000 },
+                { no: 4, nama: "Masjid Baitul Makmur Gebang", fitrah_beras: 410, fitrah_uang: 3100000, maal: 9200000, fidyah: 1800000, infaq: 3900000 },
+                { no: 5, nama: "Masjid Al-Muttakin Jetis", fitrah_beras: 390, fitrah_uang: 2900000, maal: 7800000, fidyah: 1400000, infaq: 3000000 }
+            ],
+            kas_idulfitri: [
+                { jenis: "Pemasukan", uraian: "Perolehan Kotak Infaq Lapangan Sholat Idul Fitri 1447 H", nominal: 18750000 },
+                { jenis: "Pemasukan", uraian: "Infaq Donatur Khusus Penyelenggaraan Bersama", nominal: 3500000 },
+                { jenis: "Pengeluaran", uraian: "Sewa Sound System & Genset Lapangan", nominal: 2500000 },
+                { jenis: "Pengeluaran", uraian: "Sewa Terop & Panggung Khatib", nominal: 1800000 },
+                { jenis: "Pengeluaran", uraian: "Bisyarah / Transport Khatib, Imam & Bilal", nominal: 2000000 },
+                { jenis: "Pengeluaran", uraian: "Konsumsi Panitia, Petugas Kebersihan & Keamanan (Kokam/Banser)", nominal: 1450000 },
+                { jenis: "Pengeluaran", uraian: "Biaya Operasional Kebersihan Lapangan Pasca Sholat Id", nominal: 750000 }
+            ]
+        };
+
+        function renderZisTable() {
+            const tbody = document.getElementById('rekap-zis-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let totBeras = 0;
+            let totUang = 0;
+            let totMaal = 0;
+            let totFidyah = 0;
+            let totInfaq = 0;
+
+            defaultData.zis.forEach((m, idx) => {
+                totBeras += m.fitrah_beras;
+                totUang += m.fitrah_uang;
+                totMaal += m.maal;
+                totFidyah += m.fidyah;
+                totInfaq += m.infaq;
+
+                const tr = document.createElement('tr');
+                tr.className = idx % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-5 text-slate-400 font-mono">${m.no}</td>
+                    <td class="py-3.5 px-5 font-semibold text-gold-300">${m.nama}</td>
+                    <td class="py-3.5 px-5 text-right font-mono text-slate-200">${m.fitrah_beras.toLocaleString('id-ID')} Kg</td>
+                    <td class="py-3.5 px-5 text-right font-mono text-slate-200">${formatRp(m.fitrah_uang)}</td>
+                    <td class="py-3.5 px-5 text-right font-mono text-slate-200">${formatRp(m.maal)}</td>
+                    <td class="py-3.5 px-5 text-right font-mono text-slate-200">${formatRp(m.fidyah)}</td>
+                    <td class="py-3.5 px-5 text-right font-mono font-bold text-gold-400">${formatRp(m.infaq)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Top 4 Cards
+            const elTotBeras = document.getElementById('total-fitrah-beras');
+            const elTotUang = document.getElementById('total-fitrah-uang');
+            const elTotMaal = document.getElementById('total-zakat-mal');
+            const elTotFidyah = document.getElementById('total-fidyah');
+            const elTotInfaq = document.getElementById('total-infaq-umum');
+
+            if (elTotBeras) elTotBeras.innerText = `${totBeras.toLocaleString('id-ID')} Kg`;
+            if (elTotUang) elTotUang.innerText = `Uang: ${formatRp(totUang)}`;
+            if (elTotMaal) elTotMaal.innerText = formatRp(totMaal);
+            if (elTotFidyah) elTotFidyah.innerText = formatRp(totFidyah);
+            if (elTotInfaq) elTotInfaq.innerText = formatRp(totInfaq);
+
+            // Update Footer Table
+            const footBeras = document.getElementById('foot-fitrah-beras');
+            const footUang = document.getElementById('foot-fitrah-uang');
+            const footMaal = document.getElementById('foot-zakat-mal');
+            const footFidyah = document.getElementById('foot-fidyah');
+            const footInfaq = document.getElementById('foot-infaq-umum');
+
+            if (footBeras) footBeras.innerText = `${totBeras.toLocaleString('id-ID')} Kg`;
+            if (footUang) footUang.innerText = formatRp(totUang);
+            if (footMaal) footMaal.innerText = formatRp(totMaal);
+            if (footFidyah) footFidyah.innerText = formatRp(totFidyah);
+            if (footInfaq) footInfaq.innerText = formatRp(totInfaq);
+        }
+
+        function renderKasIdulFitri() {
+            const tbody = document.getElementById('infak-id-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let totalMasuk = 0;
+            let totalKeluar = 0;
+
+            defaultData.kas_idulfitri.forEach((item, idx) => {
+                const isMasuk = item.jenis === "Pemasukan";
+                if (isMasuk) {
+                    totalMasuk += item.nominal;
+                } else {
+                    totalKeluar += item.nominal;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = idx % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-950/40';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-6">
+                        <span class="text-xs px-2.5 py-1 rounded-full font-bold ${isMasuk ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-rose-950 text-rose-400 border border-rose-800'}">
+                            ${item.jenis}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-6 text-slate-200 font-medium">${item.uraian}</td>
+                    <td class="py-3.5 px-6 text-right font-mono font-bold ${isMasuk ? 'text-emerald-400' : 'text-rose-400'}">
+                        ${isMasuk ? '+' : '-'} ${formatRp(item.nominal)}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const saldoAkhir = totalMasuk - totalKeluar;
+            const elMasuk = document.getElementById('kas-total-masuk');
+            const elKeluar = document.getElementById('kas-total-keluar');
+            const elSaldo = document.getElementById('kas-saldo-akhir');
+
+            if (elMasuk) elMasuk.innerText = formatRp(totalMasuk);
+            if (elKeluar) elKeluar.innerText = formatRp(totalKeluar);
+            if (elSaldo) elSaldo.innerText = formatRp(saldoAkhir);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderZisTable();
+            renderKasIdulFitri();
+        });
+    </script>
+</body>
+</html>
